@@ -1,0 +1,473 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { ArrowDown, ArrowUpRight, Check } from "lucide-react";
+import Link from "next/link";
+import Navbar from "../../components/layout/Navbar";
+import Footer from "../../components/layout/Footer";
+
+const capabilities = [
+  "Reputation monitoring",
+  "Review management",
+  "Search presence",
+  "Brand sentiment",
+  "Crisis response",
+  "Reputation strategy",
+];
+
+const journey = [
+  {
+    number: "01",
+    title: "Listen",
+    description:
+      "We look at what customers, prospects and the wider market are saying about your brand across relevant digital channels.",
+  },
+  {
+    number: "02",
+    title: "Understand",
+    description:
+      "We identify patterns, recurring concerns and opportunities so reputation decisions are based on what is actually happening.",
+  },
+  {
+    number: "03",
+    title: "Respond",
+    description:
+      "We help create thoughtful responses that acknowledge concerns, protect relationships and represent the brand professionally.",
+  },
+  {
+    number: "04",
+    title: "Improve",
+    description:
+      "We use what we learn to improve communication, customer experience and the digital signals people encounter.",
+  },
+  {
+    number: "05",
+    title: "Protect",
+    description:
+      "We establish an ongoing approach that helps your business stay prepared as conversations and expectations change.",
+  },
+];
+
+const relatedServices = [
+  {
+    title: "SEO & Digital Marketing",
+    href: "/services/seo-digital-marketing",
+  },
+  {
+    title: "Branding & Design",
+    href: "/services/branding-design",
+  },
+  {
+    title: "Web Development",
+    href: "/services/web-development",
+  },
+];
+
+export default function OnlineReputationManagementPage() {
+  return (
+    <main className="overflow-hidden bg-[#f4f2ed]">
+      <Navbar />
+
+      {/* Hero */}
+      <section className="relative flex min-h-[85vh] items-end bg-[#0a0a0a] px-6 pb-20 pt-32 text-white sm:px-10 sm:pb-24 lg:px-14 lg:pb-28">
+        <div className="mx-auto w-full max-w-[1600px]">
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="mb-8 flex items-center gap-3"
+          >
+            <span className="h-px w-10 bg-[#e21d2b]" />
+
+            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/40">
+              07 / Online Reputation Management
+            </span>
+          </motion.div>
+
+          <div className="overflow-hidden">
+            <motion.h1
+              initial={{ y: "110%" }}
+              animate={{ y: 0 }}
+              transition={{
+                duration: 1,
+                ease: [0.76, 0, 0.24, 1],
+              }}
+              className="max-w-7xl text-[clamp(4rem,10vw,10rem)] font-semibold uppercase leading-[0.76] tracking-[-0.075em]"
+            >
+              Protect
+              <br />
+              your
+              <br />
+              reputation<span className="text-[#e21d2b]">.</span>
+            </motion.h1>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.7 }}
+            className="mt-10 flex items-end justify-between"
+          >
+            <p className="max-w-xl text-sm leading-6 text-white/55 sm:text-base">
+              Build trust, understand what people are saying and create a
+              stronger digital reputation around your brand.
+            </p>
+
+            <motion.div
+              animate={{ y: [0, 7, 0] }}
+              transition={{
+                duration: 1.6,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="hidden items-center gap-3 text-[9px] uppercase tracking-[0.3em] text-white/30 sm:flex"
+            >
+              Explore
+              <ArrowDown size={14} strokeWidth={1.4} />
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Intro */}
+      <section className="px-6 py-28 sm:px-10 sm:py-36 lg:px-14 lg:py-44">
+        <div className="mx-auto max-w-[1600px]">
+          <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
+            <div className="flex items-start gap-3">
+              <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
+
+              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+                The service
+              </span>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.8 }}
+            >
+              <p className="max-w-5xl text-[clamp(2rem,4vw,4.5rem)] font-medium leading-[1.02] tracking-[-0.045em] text-black/80">
+                Your reputation is part of your brand — and people often
+                research it before they ever speak to you.
+              </p>
+
+              <p className="mt-10 max-w-2xl text-base leading-7 text-black/50">
+                We help businesses understand their digital reputation,
+                respond thoughtfully to feedback and create a stronger,
+                more credible presence online.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Capabilities */}
+      <section className="bg-[#0a0a0a] px-6 py-28 text-white sm:px-10 sm:py-36 lg:px-14 lg:py-44">
+        <div className="mx-auto max-w-[1600px]">
+          <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
+            <div className="flex items-start gap-3">
+              <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
+
+              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/35">
+                What we do
+              </span>
+            </div>
+
+            <div>
+              <h2 className="text-[clamp(4rem,8vw,8.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]">
+                Trust
+                <br />
+                starts
+                <br />
+                with
+                <br />
+                listening<span className="text-[#e21d2b]">.</span>
+              </h2>
+
+              <p className="mt-10 max-w-2xl text-base leading-7 text-white/45">
+                Reputation management is not simply about reacting to negative
+                feedback. It is about understanding the conversation around
+                your business and building a stronger relationship with it.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-20 grid border-l border-t border-white/10 sm:grid-cols-2 lg:mt-28 lg:grid-cols-3">
+            {capabilities.map((capability, index) => (
+              <motion.div
+                key={capability}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.05,
+                }}
+                className="group flex min-h-[190px] flex-col justify-between border-b border-r border-white/10 p-6 transition-colors duration-500 hover:bg-[#e21d2b] sm:min-h-[220px] sm:p-8"
+              >
+                <span className="text-[10px] tracking-[0.2em] text-white/25 transition-colors group-hover:text-white/60">
+                  0{index + 1}
+                </span>
+
+                <div className="flex items-end justify-between gap-5">
+                  <h3 className="text-xl font-semibold uppercase leading-[0.9] tracking-[-0.04em] sm:text-2xl">
+                    {capability}
+                  </h3>
+
+                  <ArrowUpRight
+                    size={17}
+                    strokeWidth={1.4}
+                    className="shrink-0 transition-transform duration-500 group-hover:rotate-45"
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Reputation principle */}
+      <section className="px-6 py-28 sm:px-10 sm:py-36 lg:px-14 lg:py-44">
+        <div className="mx-auto max-w-[1600px]">
+          <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
+            <div className="flex items-start gap-3">
+              <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
+
+              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+                The principle
+              </span>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <p className="max-w-5xl text-[clamp(2.4rem,5vw,5.5rem)] font-semibold uppercase leading-[0.88] tracking-[-0.06em]">
+                Don't just
+                <br />
+                manage the
+                <br />
+                conversation<span className="text-[#e21d2b]">.</span>
+                <br />
+                Improve it.
+              </p>
+
+              <p className="mt-10 max-w-2xl text-base leading-7 text-black/50">
+                The strongest reputation is built through consistent actions,
+                clear communication and experiences that give people something
+                positive to talk about.
+              </p>
+            </motion.div>
+          </div>
+
+          <div className="mt-16 grid gap-4 border-t border-black/15 pt-7 sm:grid-cols-2 lg:mt-24 lg:grid-cols-4">
+            {[
+              "Listen carefully",
+              "Respond thoughtfully",
+              "Build credibility",
+              "Stay prepared",
+            ].map((item) => (
+              <div
+                key={item}
+                className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-black/55"
+              >
+                <span className="flex h-7 w-7 items-center justify-center rounded-full border border-black/15">
+                  <Check size={13} strokeWidth={1.5} />
+                </span>
+
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Journey */}
+      <section className="bg-[#e9e6df] px-6 py-28 sm:px-10 sm:py-36 lg:px-14 lg:py-44">
+        <div className="mx-auto max-w-[1600px]">
+          <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
+            <div className="flex items-start gap-3">
+              <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
+
+              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+                The reputation journey
+              </span>
+            </div>
+
+            <div>
+              <h2 className="text-[clamp(4rem,8vw,8.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]">
+                Listen.
+                <br />
+                Understand.
+                <br />
+                Respond.
+                <br />
+                Improve.
+                <br />
+                Protect<span className="text-[#e21d2b]">.</span>
+              </h2>
+            </div>
+          </div>
+
+          <div className="mt-20 border-t border-black/15 lg:mt-28">
+            {journey.map((step, index) => (
+              <motion.div
+                key={step.number}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{
+                  duration: 0.6,
+                  delay: index * 0.05,
+                }}
+                className="group grid gap-6 border-b border-black/15 py-8 sm:grid-cols-[70px_0.7fr_1.3fr] sm:items-center sm:py-10 lg:py-12"
+              >
+                <span className="text-[10px] tracking-[0.2em] text-black/30 transition-colors group-hover:text-[#e21d2b]">
+                  {step.number}
+                </span>
+
+                <h3 className="text-[clamp(2.2rem,4vw,4.5rem)] font-semibold uppercase leading-[0.85] tracking-[-0.055em] transition-transform duration-500 group-hover:translate-x-2">
+                  {step.title}
+                </h3>
+
+                <p className="max-w-lg text-sm leading-6 text-black/50 sm:text-base">
+                  {step.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Result */}
+      <section className="bg-[#0a0a0a] px-6 py-28 text-white sm:px-10 sm:py-36 lg:px-14 lg:py-44">
+        <div className="mx-auto max-w-[1600px]">
+          <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
+            <div className="flex items-start gap-3">
+              <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
+
+              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/35">
+                The result
+              </span>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <p className="max-w-5xl text-[clamp(2.4rem,5vw,5.5rem)] font-semibold uppercase leading-[0.88] tracking-[-0.06em]">
+                Trusted.
+                <br />
+                Credible.
+                <br />
+                Resilient<span className="text-[#e21d2b]">.</span>
+              </p>
+
+              <p className="mt-10 max-w-2xl text-base leading-7 text-white/45">
+                A strong digital reputation gives customers confidence,
+                strengthens your brand and helps your business stay prepared
+                for whatever the next conversation brings.
+              </p>
+            </motion.div>
+          </div>
+
+          <div className="mt-16 grid gap-4 border-t border-white/10 pt-7 sm:grid-cols-2 lg:mt-24 lg:grid-cols-4">
+            {[
+              "More visibility",
+              "Greater trust",
+              "Stronger credibility",
+              "Better prepared",
+            ].map((item) => (
+              <div
+                key={item}
+                className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/45"
+              >
+                <span className="flex h-7 w-7 items-center justify-center rounded-full border border-white/15">
+                  <Check size={13} strokeWidth={1.5} />
+                </span>
+
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Related services */}
+      <section className="bg-[#0a0a0a] px-6 pb-24 text-white sm:px-10 sm:pb-28 lg:px-14">
+        <div className="mx-auto max-w-[1600px]">
+          <div className="mb-10 flex items-center gap-3">
+            <span className="h-px w-10 bg-[#e21d2b]" />
+
+            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/35">
+              Explore more
+            </span>
+          </div>
+
+          <div className="border-t border-white/10">
+            {relatedServices.map((service) => (
+              <Link
+                key={service.title}
+                href={service.href}
+                className="group flex items-center justify-between border-b border-white/10 py-7 sm:py-9"
+              >
+                <span className="text-[clamp(2rem,4vw,4rem)] font-semibold uppercase leading-none tracking-[-0.05em] transition-colors duration-300 group-hover:text-[#e21d2b]">
+                  {service.title}
+                </span>
+
+                <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 transition-all duration-300 group-hover:border-[#e21d2b] group-hover:bg-[#e21d2b]">
+                  <ArrowUpRight
+                    size={17}
+                    strokeWidth={1.4}
+                    className="transition-transform duration-300 group-hover:rotate-45"
+                  />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="bg-[#f4f2ed] px-6 py-20 sm:px-10 sm:py-24 lg:px-14 lg:py-28">
+        <div className="mx-auto max-w-[1600px] border-t border-black/15 pt-7">
+          <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+                Start a conversation
+              </span>
+
+              <h2 className="mt-5 text-[clamp(2.5rem,5vw,5rem)] font-semibold uppercase leading-[0.85] tracking-[-0.06em]">
+                Ready to build
+                <br />
+                more trust<span className="text-[#e21d2b]">?</span>
+              </h2>
+            </div>
+
+            <Link
+              href="/contact"
+              className="group flex w-fit items-center gap-4 text-[10px] font-semibold uppercase tracking-[0.25em]"
+            >
+              Start a project
+
+              <span className="flex h-11 w-11 items-center justify-center rounded-full border border-black/20 transition-all duration-300 group-hover:border-[#e21d2b] group-hover:bg-[#e21d2b] group-hover:text-white">
+                <ArrowUpRight
+                  size={16}
+                  strokeWidth={1.5}
+                  className="transition-transform duration-300 group-hover:rotate-45"
+                />
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  );
+}
