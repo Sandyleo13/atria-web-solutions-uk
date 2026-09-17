@@ -70,17 +70,18 @@ export default function Navbar({
   };
 
   /*
-   * Normal dark-hero pages:
-   * - Light Atria logo
-   * - White menu button
+   * DARK HERO PAGES
+   * Home / Work / Services / About / Insights
+   * --------------------------------------------
+   * Light logo + light menu button
    *
-   * Contact page:
-   * - logoVariant="dark"
-   * - Dark logo treatment
-   * - Dark menu button
+   * CONTACT PAGE
+   * --------------------------------------------
+   * Dark logo + dark menu button
    *
-   * When the full-screen menu opens:
-   * - Always use the light header styling
+   * FULL SCREEN MENU
+   * --------------------------------------------
+   * Always switches to white/light styling
    */
   const useLightHeader = menuOpen || !isDarkLogo;
 
@@ -117,15 +118,15 @@ export default function Navbar({
             }}
           >
             <img
-              src="/logo/atria-logo-light.webp"
+              src={
+                isDarkLogo && !menuOpen
+                  ? "/logo/atria-logo.webp"
+                  : "/logo/atria-logo-light.webp"
+              }
               alt="Atria Web Solutions"
               width={180}
               height={70}
-              className={`h-auto w-[125px] transition-all duration-300 sm:w-[145px] ${
-                isDarkLogo && !menuOpen
-                  ? "brightness-0"
-                  : "brightness-100"
-              }`}
+              className="h-auto w-[125px] sm:w-[145px]"
             />
           </motion.a>
 
@@ -155,7 +156,7 @@ export default function Navbar({
               className={`group flex items-center gap-3 rounded-full px-4 py-2.5 backdrop-blur-md transition-all duration-300 ${
                 useLightHeader
                   ? "border border-white/25 bg-black/20 text-white hover:border-white hover:bg-white hover:text-black"
-                  : "border border-black/15 bg-black/[0.03] text-black hover:border-black hover:bg-black hover:text-white"
+                  : "border border-black/25 bg-black/[0.08] text-black hover:border-black hover:bg-black hover:text-white"
               }`}
             >
               <span className="text-xs font-semibold uppercase tracking-[0.18em]">

@@ -42,7 +42,7 @@ export default function ContactPage() {
 
   return (
     <main className="overflow-hidden bg-[#f7f5f0]">
-      <Navbar />
+      <Navbar logoVariant="dark" />
 
       {/* Contact */}
       <section className="px-6 py-20 sm:px-10 sm:py-28 lg:px-14 lg:py-32">
