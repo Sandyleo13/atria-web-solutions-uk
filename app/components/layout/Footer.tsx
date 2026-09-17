@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const footerLinks = [
   { label: "Work", href: "/work" },
@@ -14,11 +15,26 @@ const footerLinks = [
 ];
 
 const serviceLinks = [
-  { label: "Web Development", href: "/services/web-development" },
-  { label: "E-Commerce", href: "/services/ecommerce" },
-  { label: "SEO & Digital Marketing", href: "/services/seo-digital-marketing" },
-  { label: "Branding & Design", href: "/services/branding-design" },
-  { label: "Mobile App Development", href: "/services/mobile-app-development" },
+  {
+    label: "Web Development",
+    href: "/services/web-development",
+  },
+  {
+    label: "E-Commerce",
+    href: "/services/ecommerce",
+  },
+  {
+    label: "SEO & Digital Marketing",
+    href: "/services/seo-digital-marketing",
+  },
+  {
+    label: "Branding & Design",
+    href: "/services/branding-design",
+  },
+  {
+    label: "Mobile App Development",
+    href: "/services/mobile-app-development",
+  },
 ];
 
 export default function Footer() {
@@ -27,19 +43,30 @@ export default function Footer() {
       <div className="mx-auto max-w-[1600px] px-6 sm:px-10 lg:px-14">
         {/* =====================================================
             MAIN FOOTER
-        ===================================================== */}
+        ====================================================== */}
 
         <div className="grid gap-16 border-b border-white/10 py-16 sm:py-20 lg:grid-cols-[1.2fr_0.8fr_0.8fr] lg:gap-20">
-
-          {/* BRAND / CONTACT */}
+          {/* =================================================
+              BRAND / CONTACT
+          ================================================== */}
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            initial={{
+              opacity: 0,
+              y: 20,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              duration: 0.6,
+            }}
           >
-            <a href="/" className="inline-block">
+            <Link href="/" className="inline-block">
               <Image
                 src="/logo/atria-logo-light.webp"
                 alt="Atria Web Solutions"
@@ -47,7 +74,7 @@ export default function Footer() {
                 height={70}
                 className="h-auto w-[130px] sm:w-[145px]"
               />
-            </a>
+            </Link>
 
             <p className="mt-7 max-w-sm text-sm leading-6 text-white/45">
               We design, develop and grow digital experiences for ambitious
@@ -68,13 +95,26 @@ export default function Footer() {
             </a>
           </motion.div>
 
-          {/* NAVIGATION */}
+          {/* =================================================
+              NAVIGATION
+          ================================================== */}
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            initial={{
+              opacity: 0,
+              y: 20,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              duration: 0.6,
+              delay: 0.1,
+            }}
           >
             <p className="mb-7 text-[9px] font-semibold uppercase tracking-[0.3em] text-white/30">
               Navigation
@@ -82,7 +122,7 @@ export default function Footer() {
 
             <nav className="flex flex-col gap-4">
               {footerLinks.map((link) => (
-                <a
+                <Link
                   key={link.label}
                   href={link.href}
                   className="group flex w-fit items-center gap-3 text-[11px] font-medium uppercase tracking-[0.18em] text-white/55 transition-colors duration-300 hover:text-white"
@@ -90,18 +130,31 @@ export default function Footer() {
                   <span className="h-px w-0 bg-[#e21d2b] transition-all duration-300 group-hover:w-4" />
 
                   {link.label}
-                </a>
+                </Link>
               ))}
             </nav>
           </motion.div>
 
-          {/* SERVICES */}
+          {/* =================================================
+              SERVICES
+          ================================================== */}
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            initial={{
+              opacity: 0,
+              y: 20,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              duration: 0.6,
+              delay: 0.2,
+            }}
           >
             <p className="mb-7 text-[9px] font-semibold uppercase tracking-[0.3em] text-white/30">
               Services
@@ -109,7 +162,7 @@ export default function Footer() {
 
             <nav className="flex flex-col gap-4">
               {serviceLinks.map((service) => (
-                <a
+                <Link
                   key={service.label}
                   href={service.href}
                   className="group flex w-fit items-start gap-3 text-[10px] leading-4 text-white/45 transition-colors duration-300 hover:text-white"
@@ -117,7 +170,7 @@ export default function Footer() {
                   <span className="mt-2 h-px w-0 shrink-0 bg-[#e21d2b] transition-all duration-300 group-hover:w-3" />
 
                   {service.label}
-                </a>
+                </Link>
               ))}
             </nav>
           </motion.div>
@@ -125,30 +178,48 @@ export default function Footer() {
 
         {/* =====================================================
             BOTTOM
-        ===================================================== */}
+        ====================================================== */}
 
         <div className="flex flex-col gap-6 py-7 text-[9px] uppercase tracking-[0.22em] text-white/25 sm:flex-row sm:items-center sm:justify-between">
+          {/* Copyright */}
 
-          <p>
-            © 2026 Atria Web Solutions
-          </p>
+          <p>© 2026 Atria Web Solutions</p>
+
+          {/* Legal / Location */}
 
           <div className="flex flex-wrap items-center gap-5">
-            <a
-              href="/privacy-policy"
-              className="transition-colors hover:text-white"
+            {/* Privacy */}
+
+            <Link
+              href="/privacy"
+              className="transition-colors duration-300 hover:text-white"
             >
               Privacy
-            </a>
+            </Link>
 
-            <a
-              href="/terms-and-conditions"
-              className="transition-colors hover:text-white"
+            {/* Terms */}
+
+            <Link
+              href="/terms"
+              className="transition-colors duration-300 hover:text-white"
             >
               Terms
-            </a>
+            </Link>
 
-            <span>United Kingdom</span>
+            {/* United Kingdom → Homepage */}
+
+            <Link
+              href="/"
+              className="group inline-flex items-center gap-2 transition-colors duration-300 hover:text-white"
+            >
+              <span>United Kingdom</span>
+
+              <ArrowUpRight
+                size={11}
+                strokeWidth={1.4}
+                className="opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
+              />
+            </Link>
           </div>
         </div>
       </div>
