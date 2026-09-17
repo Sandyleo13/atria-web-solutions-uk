@@ -7,12 +7,36 @@ import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
 
 const capabilities = [
-  "Shopify stores",
-  "Custom e-commerce",
-  "Product experiences",
-  "Conversion optimisation",
-  "Payment integration",
-  "Store redesigns",
+  {
+    number: "01",
+    title: "Shopify Stores",
+    href: "/services/ecommerce/shopify-stores",
+  },
+  {
+    number: "02",
+    title: "Custom E-Commerce",
+    href: "/services/ecommerce/custom-ecommerce",
+  },
+  {
+    number: "03",
+    title: "Product Experiences",
+    href: "/services/ecommerce/product-experiences",
+  },
+  {
+    number: "04",
+    title: "Conversion Optimisation",
+    href: "/services/ecommerce/conversion-optimisation",
+  },
+  {
+    number: "05",
+    title: "Payment Integration",
+    href: "/services/ecommerce/payment-integration",
+  },
+  {
+    number: "06",
+    title: "Store Redesigns",
+    href: "/services/ecommerce/store-redesigns",
+  },
 ];
 
 const process = [
@@ -68,9 +92,24 @@ export default function EcommercePage() {
     <main className="overflow-hidden bg-[#f4f2ed]">
       <Navbar />
 
-      {/* Hero */}
-      <section className="relative flex min-h-[85vh] items-end bg-[#0a0a0a] px-6 pb-20 pt-32 text-white sm:px-10 sm:pb-24 lg:px-14 lg:pb-28">
-        <div className="mx-auto w-full max-w-[1600px]">
+      {/* =====================================================
+          HERO
+      ===================================================== */}
+      <section className="relative flex min-h-[85vh] items-end overflow-hidden bg-[#0a0a0a] px-6 pb-20 pt-32 text-white sm:px-10 sm:pb-24 lg:px-14 lg:pb-28">
+        {/* Technical grid */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.35) 1px, transparent 1px)",
+            backgroundSize: "80px 80px",
+          }}
+        />
+
+        {/* Red glow */}
+        <div className="pointer-events-none absolute right-[-10%] top-[10%] h-[550px] w-[550px] rounded-full bg-[#e21d2b]/10 blur-[150px]" />
+
+        <div className="relative z-10 mx-auto w-full max-w-[1600px]">
           <motion.div
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
@@ -98,7 +137,8 @@ export default function EcommercePage() {
               <br />
               built to
               <br />
-              convert<span className="text-[#e21d2b]">.</span>
+              convert
+              <span className="text-[#e21d2b]">.</span>
             </motion.h1>
           </div>
 
@@ -130,7 +170,9 @@ export default function EcommercePage() {
         </div>
       </section>
 
-      {/* Intro */}
+      {/* =====================================================
+          INTRO
+      ===================================================== */}
       <section className="px-6 py-28 sm:px-10 sm:py-36 lg:px-14 lg:py-44">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
@@ -163,7 +205,9 @@ export default function EcommercePage() {
         </div>
       </section>
 
-      {/* Capabilities */}
+      {/* =====================================================
+          CAPABILITIES
+      ===================================================== */}
       <section className="bg-[#0a0a0a] px-6 py-28 text-white sm:px-10 sm:py-36 lg:px-14 lg:py-44">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
@@ -181,7 +225,8 @@ export default function EcommercePage() {
                 <br />
                 made
                 <br />
-                simpler<span className="text-[#e21d2b]">.</span>
+                simpler
+                <span className="text-[#e21d2b]">.</span>
               </h2>
 
               <p className="mt-10 max-w-2xl text-base leading-7 text-white/45">
@@ -192,10 +237,13 @@ export default function EcommercePage() {
             </div>
           </div>
 
+          {/* =================================================
+              CLICKABLE E-COMMERCE SERVICES
+          ================================================= */}
           <div className="mt-20 grid border-l border-t border-white/10 sm:grid-cols-2 lg:mt-28 lg:grid-cols-3">
             {capabilities.map((capability, index) => (
               <motion.div
-                key={capability}
+                key={capability.href}
                 initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -203,30 +251,40 @@ export default function EcommercePage() {
                   duration: 0.5,
                   delay: index * 0.05,
                 }}
-                className="group flex min-h-[190px] flex-col justify-between border-b border-r border-white/10 p-6 transition-colors duration-500 hover:bg-[#e21d2b] sm:min-h-[220px] sm:p-8"
               >
-                <span className="text-[10px] tracking-[0.2em] text-white/25 transition-colors group-hover:text-white/60">
-                  0{index + 1}
-                </span>
+                <Link
+                  href={capability.href}
+                  className="group relative flex min-h-[190px] w-full flex-col justify-between border-b border-r border-white/10 p-6 transition-colors duration-500 hover:bg-[#e21d2b] sm:min-h-[220px] sm:p-8"
+                >
+                  <span className="text-[10px] tracking-[0.2em] text-white/25 transition-colors duration-500 group-hover:text-white/65">
+                    {capability.number}
+                  </span>
 
-                <div className="flex items-end justify-between gap-5">
-                  <h3 className="text-xl font-semibold uppercase leading-[0.9] tracking-[-0.04em] sm:text-2xl">
-                    {capability}
-                  </h3>
+                  <div className="flex items-end justify-between gap-5">
+                    <h3 className="max-w-[80%] text-xl font-semibold uppercase leading-[0.9] tracking-[-0.04em] sm:text-2xl">
+                      {capability.title}
+                    </h3>
 
-                  <ArrowUpRight
-                    size={17}
-                    strokeWidth={1.4}
-                    className="shrink-0 transition-transform duration-500 group-hover:rotate-45"
-                  />
-                </div>
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 transition-all duration-500 group-hover:border-white group-hover:bg-white group-hover:text-black">
+                      <ArrowUpRight
+                        size={17}
+                        strokeWidth={1.4}
+                        className="transition-transform duration-500 group-hover:rotate-45"
+                      />
+                    </span>
+                  </div>
+
+                  <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-white transition-all duration-500 group-hover:w-full" />
+                </Link>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Customer journey */}
+      {/* =====================================================
+          CUSTOMER JOURNEY
+      ===================================================== */}
       <section className="px-6 py-28 sm:px-10 sm:py-36 lg:px-14 lg:py-44">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
@@ -251,7 +309,8 @@ export default function EcommercePage() {
                 <br />
                 Choose.
                 <br />
-                Return<span className="text-[#e21d2b]">.</span>
+                Return
+                <span className="text-[#e21d2b]">.</span>
               </p>
 
               <p className="mt-10 max-w-2xl text-base leading-7 text-black/50">
@@ -284,7 +343,9 @@ export default function EcommercePage() {
         </div>
       </section>
 
-      {/* Process */}
+      {/* =====================================================
+          PROCESS
+      ===================================================== */}
       <section className="bg-[#e9e6df] px-6 py-28 sm:px-10 sm:py-36 lg:px-14 lg:py-44">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
@@ -304,7 +365,8 @@ export default function EcommercePage() {
                 <br />
                 to
                 <br />
-                purchase<span className="text-[#e21d2b]">.</span>
+                purchase
+                <span className="text-[#e21d2b]">.</span>
               </h2>
             </div>
           </div>
@@ -339,7 +401,9 @@ export default function EcommercePage() {
         </div>
       </section>
 
-      {/* Performance */}
+      {/* =====================================================
+          PERFORMANCE / GROWTH
+      ===================================================== */}
       <section className="bg-[#0a0a0a] px-6 py-28 text-white sm:px-10 sm:py-36 lg:px-14 lg:py-44">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
@@ -362,7 +426,8 @@ export default function EcommercePage() {
                 <br />
                 can grow with
                 <br />
-                the business<span className="text-[#e21d2b]">.</span>
+                the business
+                <span className="text-[#e21d2b]">.</span>
               </p>
 
               <p className="mt-10 max-w-2xl text-base leading-7 text-white/45">
@@ -395,7 +460,9 @@ export default function EcommercePage() {
         </div>
       </section>
 
-      {/* Related services */}
+      {/* =====================================================
+          RELATED SERVICES
+      ===================================================== */}
       <section className="bg-[#0a0a0a] px-6 pb-24 text-white sm:px-10 sm:pb-28 lg:px-14">
         <div className="mx-auto max-w-[1600px]">
           <div className="mb-10 flex items-center gap-3">
@@ -407,15 +474,21 @@ export default function EcommercePage() {
           </div>
 
           <div className="border-t border-white/10">
-            {relatedServices.map((service) => (
+            {relatedServices.map((service, index) => (
               <Link
                 key={service.title}
                 href={service.href}
                 className="group flex items-center justify-between border-b border-white/10 py-7 sm:py-9"
               >
-                <span className="text-[clamp(2rem,4vw,4rem)] font-semibold uppercase leading-none tracking-[-0.05em] transition-colors duration-300 group-hover:text-[#e21d2b]">
-                  {service.title}
-                </span>
+                <div className="flex items-center gap-5">
+                  <span className="text-[9px] text-white/25">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+
+                  <span className="text-[clamp(2rem,4vw,4rem)] font-semibold uppercase leading-none tracking-[-0.05em] transition-colors duration-300 group-hover:text-[#e21d2b]">
+                    {service.title}
+                  </span>
+                </div>
 
                 <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 transition-all duration-300 group-hover:border-[#e21d2b] group-hover:bg-[#e21d2b]">
                   <ArrowUpRight
@@ -430,7 +503,9 @@ export default function EcommercePage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* =====================================================
+          CTA
+      ===================================================== */}
       <section className="bg-[#f4f2ed] px-6 py-20 sm:px-10 sm:py-24 lg:px-14 lg:py-28">
         <div className="mx-auto max-w-[1600px] border-t border-black/15 pt-7">
           <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
@@ -442,7 +517,8 @@ export default function EcommercePage() {
               <h2 className="mt-5 text-[clamp(2.5rem,5vw,5rem)] font-semibold uppercase leading-[0.85] tracking-[-0.06em]">
                 Ready to sell
                 <br />
-                online<span className="text-[#e21d2b]">?</span>
+                online
+                <span className="text-[#e21d2b]">?</span>
               </h2>
             </div>
 

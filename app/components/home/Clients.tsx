@@ -1,18 +1,43 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
 const industries = [
-  "Retail",
-  "Hospitality",
-  "Healthcare",
-  "E-Commerce",
-  "Professional Services",
-  "Startups",
+  {
+    number: "01",
+    name: "Retail",
+    href: "/industries/retail",
+  },
+  {
+    number: "02",
+    name: "Hospitality",
+    href: "/industries/hospitality",
+  },
+  {
+    number: "03",
+    name: "Healthcare",
+    href: "/industries/healthcare",
+  },
+  {
+    number: "04",
+    name: "E-Commerce",
+    href: "/industries/ecommerce",
+  },
+  {
+    number: "05",
+    name: "Professional Services",
+    href: "/industries/professional-services",
+  },
+  {
+    number: "06",
+    name: "Startups",
+    href: "/industries/startups",
+  },
 ];
 
-export default function Clients() {
+export default function Industries() {
   return (
     <section
       id="clients"
@@ -49,7 +74,8 @@ export default function Clients() {
             <br />
             ambitious
             <br />
-            businesses<span className="text-[#e21d2b]">.</span>
+            businesses
+            <span className="text-[#e21d2b]">.</span>
           </motion.h2>
         </div>
 
@@ -85,12 +111,11 @@ export default function Clients() {
           >
             {[...industries, ...industries].map((industry, index) => (
               <div
-                key={`${industry}-${index}`}
+                key={`${industry.name}-${index}`}
                 className="flex items-center"
               >
-                <span className="px-6 text-[clamp(2rem,4vw,4rem)] font-semibold uppercase leading-none tracking-[-0.05em] text-black/85 sm:px-10"
-                >
-                  {industry}
+                <span className="px-6 text-[clamp(2rem,4vw,4rem)] font-semibold uppercase leading-none tracking-[-0.05em] text-black/85 sm:px-10">
+                  {industry.name}
                 </span>
 
                 <span className="text-xl text-[#e21d2b]">•</span>
@@ -103,7 +128,7 @@ export default function Clients() {
         <div className="mt-16 grid border-l border-t border-black/15 sm:grid-cols-2 lg:grid-cols-3">
           {industries.map((industry, index) => (
             <motion.div
-              key={industry}
+              key={industry.href}
               initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
@@ -111,25 +136,32 @@ export default function Clients() {
                 duration: 0.6,
                 delay: index * 0.05,
               }}
-              className="group flex min-h-[150px] items-end justify-between border-b border-r border-black/15 p-6 transition-colors duration-500 hover:bg-[#0a0a0a] hover:text-white sm:min-h-[190px] sm:p-8"
             >
-              <div>
-                <span className="mb-5 block text-[9px] tracking-[0.25em] text-black/30 transition-colors duration-500 group-hover:text-white/35">
-                  0{index + 1}
+              <Link
+                href={industry.href}
+                className="group relative flex min-h-[150px] w-full items-end justify-between border-b border-r border-black/15 p-6 transition-colors duration-500 hover:bg-[#0a0a0a] hover:text-white sm:min-h-[190px] sm:p-8"
+              >
+                <div>
+                  <span className="mb-5 block text-[9px] tracking-[0.25em] text-black/30 transition-colors duration-500 group-hover:text-white/35">
+                    {industry.number}
+                  </span>
+
+                  <h3 className="text-xl font-semibold uppercase tracking-[-0.04em] sm:text-2xl">
+                    {industry.name}
+                  </h3>
+                </div>
+
+                <span className="flex h-10 w-10 items-center justify-center rounded-full border border-black/15 transition-all duration-500 group-hover:border-[#e21d2b] group-hover:bg-[#e21d2b]">
+                  <ArrowUpRight
+                    size={15}
+                    strokeWidth={1.5}
+                    className="transition-transform duration-500 group-hover:rotate-45"
+                  />
                 </span>
 
-                <h3 className="text-xl font-semibold uppercase tracking-[-0.04em] sm:text-2xl">
-                  {industry}
-                </h3>
-              </div>
-
-              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-black/15 transition-all duration-500 group-hover:border-[#e21d2b] group-hover:bg-[#e21d2b]">
-                <ArrowUpRight
-                  size={15}
-                  strokeWidth={1.5}
-                  className="transition-transform duration-500 group-hover:rotate-45"
-                />
-              </span>
+                {/* Bottom red hover line */}
+                <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#e21d2b] transition-all duration-500 group-hover:w-full" />
+              </Link>
             </motion.div>
           ))}
         </div>
@@ -145,10 +177,11 @@ export default function Clients() {
           <p className="max-w-2xl text-[clamp(2rem,4vw,4rem)] font-semibold uppercase leading-[0.9] tracking-[-0.055em] text-black">
             Your business
             <br />
-            could be next<span className="text-[#e21d2b]">.</span>
+            could be next
+            <span className="text-[#e21d2b]">.</span>
           </p>
 
-          <a
+          <Link
             href="/contact"
             className="group flex w-fit items-center gap-4 text-[10px] font-semibold uppercase tracking-[0.25em]"
           >
@@ -161,7 +194,7 @@ export default function Clients() {
                 className="transition-transform duration-300 group-hover:rotate-45"
               />
             </span>
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>

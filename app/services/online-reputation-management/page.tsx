@@ -7,12 +7,36 @@ import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
 
 const capabilities = [
-  "Reputation monitoring",
-  "Review management",
-  "Search presence",
-  "Brand sentiment",
-  "Crisis response",
-  "Reputation strategy",
+  {
+    number: "01",
+    title: "Reputation Monitoring",
+    href: "/services/online-reputation-management/reputation-monitoring",
+  },
+  {
+    number: "02",
+    title: "Review Management",
+    href: "/services/online-reputation-management/review-management",
+  },
+  {
+    number: "03",
+    title: "Search Presence",
+    href: "/services/online-reputation-management/search-presence",
+  },
+  {
+    number: "04",
+    title: "Brand Sentiment",
+    href: "/services/online-reputation-management/brand-sentiment",
+  },
+  {
+    number: "05",
+    title: "Crisis Response",
+    href: "/services/online-reputation-management/crisis-response",
+  },
+  {
+    number: "06",
+    title: "Reputation Strategy",
+    href: "/services/online-reputation-management/reputation-strategy",
+  },
 ];
 
 const journey = [
@@ -186,9 +210,10 @@ export default function OnlineReputationManagementPage() {
               </h2>
 
               <p className="mt-10 max-w-2xl text-base leading-7 text-white/45">
-                Reputation management is not simply about reacting to negative
-                feedback. It is about understanding the conversation around
-                your business and building a stronger relationship with it.
+                Reputation management is not simply about reacting to
+                negative feedback. It is about understanding the conversation
+                around your business and building a stronger relationship with
+                it.
               </p>
             </div>
           </div>
@@ -196,7 +221,7 @@ export default function OnlineReputationManagementPage() {
           <div className="mt-20 grid border-l border-t border-white/10 sm:grid-cols-2 lg:mt-28 lg:grid-cols-3">
             {capabilities.map((capability, index) => (
               <motion.div
-                key={capability}
+                key={capability.href}
                 initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -204,23 +229,28 @@ export default function OnlineReputationManagementPage() {
                   duration: 0.5,
                   delay: index * 0.05,
                 }}
-                className="group flex min-h-[190px] flex-col justify-between border-b border-r border-white/10 p-6 transition-colors duration-500 hover:bg-[#e21d2b] sm:min-h-[220px] sm:p-8"
+                className="group border-b border-r border-white/10"
               >
-                <span className="text-[10px] tracking-[0.2em] text-white/25 transition-colors group-hover:text-white/60">
-                  0{index + 1}
-                </span>
+                <Link
+                  href={capability.href}
+                  className="flex min-h-[190px] flex-col justify-between p-6 transition-colors duration-500 hover:bg-[#e21d2b] sm:min-h-[220px] sm:p-8"
+                >
+                  <span className="text-[10px] tracking-[0.2em] text-white/25 transition-colors group-hover:text-white/60">
+                    {capability.number}
+                  </span>
 
-                <div className="flex items-end justify-between gap-5">
-                  <h3 className="text-xl font-semibold uppercase leading-[0.9] tracking-[-0.04em] sm:text-2xl">
-                    {capability}
-                  </h3>
+                  <div className="flex items-end justify-between gap-5">
+                    <h3 className="text-xl font-semibold uppercase leading-[0.9] tracking-[-0.04em] sm:text-2xl">
+                      {capability.title}
+                    </h3>
 
-                  <ArrowUpRight
-                    size={17}
-                    strokeWidth={1.4}
-                    className="shrink-0 transition-transform duration-500 group-hover:rotate-45"
-                  />
-                </div>
+                    <ArrowUpRight
+                      size={17}
+                      strokeWidth={1.4}
+                      className="shrink-0 transition-transform duration-500 group-hover:rotate-45"
+                    />
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>

@@ -7,12 +7,36 @@ import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
 
 const capabilities = [
-  "iOS applications",
-  "Android applications",
-  "Cross-platform apps",
-  "Business applications",
-  "Customer apps",
-  "MVPs & prototypes",
+  {
+    number: "01",
+    title: "iOS Applications",
+    href: "/services/mobile-app-development/ios-applications",
+  },
+  {
+    number: "02",
+    title: "Android Applications",
+    href: "/services/mobile-app-development/android-applications",
+  },
+  {
+    number: "03",
+    title: "Cross-Platform Apps",
+    href: "/services/mobile-app-development/cross-platform-apps",
+  },
+  {
+    number: "04",
+    title: "Business Applications",
+    href: "/services/mobile-app-development/business-applications",
+  },
+  {
+    number: "05",
+    title: "Customer Apps",
+    href: "/services/mobile-app-development/customer-apps",
+  },
+  {
+    number: "06",
+    title: "MVPs & Prototypes",
+    href: "/services/mobile-app-development/mvps-prototypes",
+  },
 ];
 
 const journey = [
@@ -198,36 +222,41 @@ export default function MobileAppDevelopmentPage() {
           </div>
 
           <div className="mt-20 grid border-l border-t border-white/10 sm:grid-cols-2 lg:mt-28 lg:grid-cols-3">
-            {capabilities.map((capability, index) => (
-              <motion.div
-                key={capability}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.5,
-                  delay: index * 0.05,
-                }}
-                className="group flex min-h-[190px] flex-col justify-between border-b border-r border-white/10 p-6 transition-colors duration-500 hover:bg-[#e21d2b] sm:min-h-[220px] sm:p-8"
-              >
-                <span className="text-[10px] tracking-[0.2em] text-white/25 transition-colors group-hover:text-white/60">
-                  0{index + 1}
-                </span>
+  {capabilities.map((capability, index) => (
+    <motion.div
+      key={capability.href}
+      initial={{ opacity: 0, y: 25 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{
+        duration: 0.5,
+        delay: index * 0.05,
+      }}
+      className="group border-b border-r border-white/10"
+    >
+      <Link
+        href={capability.href}
+        className="flex min-h-[190px] flex-col justify-between p-6 transition-colors duration-500 hover:bg-[#e21d2b] sm:min-h-[220px] sm:p-8"
+      >
+        <span className="text-[10px] tracking-[0.2em] text-white/25 transition-colors group-hover:text-white/60">
+          {capability.number}
+        </span>
 
-                <div className="flex items-end justify-between gap-5">
-                  <h3 className="text-xl font-semibold uppercase leading-[0.9] tracking-[-0.04em] sm:text-2xl">
-                    {capability}
-                  </h3>
+        <div className="flex items-end justify-between gap-5">
+          <h3 className="text-xl font-semibold uppercase leading-[0.9] tracking-[-0.04em] sm:text-2xl">
+            {capability.title}
+          </h3>
 
-                  <ArrowUpRight
-                    size={17}
-                    strokeWidth={1.4}
-                    className="shrink-0 transition-transform duration-500 group-hover:rotate-45"
-                  />
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          <ArrowUpRight
+            size={17}
+            strokeWidth={1.4}
+            className="shrink-0 transition-transform duration-500 group-hover:rotate-45"
+          />
+        </div>
+      </Link>
+    </motion.div>
+  ))}
+</div>
         </div>
       </section>
 
