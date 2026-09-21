@@ -66,7 +66,7 @@ export default function WorkPage() {
           >
             <span className="h-px w-10 bg-[#e21d2b]" />
 
-            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/40">
+            <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/40">
               03 / Work
             </span>
           </motion.div>
@@ -79,7 +79,7 @@ export default function WorkPage() {
                 duration: 1,
                 ease: [0.76, 0, 0.24, 1],
               }}
-              className="max-w-7xl text-[clamp(4.5rem,11vw,11rem)] font-semibold uppercase leading-[0.74] tracking-[-0.08em]"
+              className="max-w-7xl text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.74] tracking-[-0.08em]"
             >
               Selected
               <br />
@@ -105,7 +105,7 @@ export default function WorkPage() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="hidden items-center gap-3 text-[9px] uppercase tracking-[0.3em] text-white/30 sm:flex"
+              className="hidden items-center gap-3 text-[14px] uppercase tracking-[0.3em] text-white/30 sm:flex"
             >
               Explore
               <ArrowDown size={14} strokeWidth={1.4} />
@@ -121,7 +121,7 @@ export default function WorkPage() {
             <div className="flex items-start gap-3">
               <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
                 Selected projects
               </span>
             </div>
@@ -131,7 +131,7 @@ export default function WorkPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="max-w-5xl text-[clamp(2rem,4vw,4.5rem)] font-medium leading-[1.02] tracking-[-0.045em] text-black/80"
+              className="max-w-5xl text-[clamp(2rem,5vw,5.5rem)] font-medium leading-[1.02] tracking-[-0.045em] text-black/80"
             >
               We don't believe good work needs unnecessary decoration.
               It needs a clear idea, thoughtful execution and a reason to
@@ -147,7 +147,7 @@ export default function WorkPage() {
           {categories.map((category, index) => (
             <button
               key={category}
-              className={`rounded-full border px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.2em] transition-all duration-300 ${
+              className={`rounded-full border px-4 py-2 text-[14px] font-semibold uppercase tracking-[0.2em] transition-all duration-300 ${
                 index === 0
                   ? "border-[#e21d2b] bg-[#e21d2b] text-white"
                   : "border-black/15 text-black/45 hover:border-[#e21d2b] hover:text-[#e21d2b]"
@@ -189,17 +189,17 @@ export default function WorkPage() {
                   <div className="absolute inset-0 bg-gradient-to-br from-black/[0.03] via-transparent to-black/[0.12]" />
 
                   <div className="relative text-center">
-                    <span className="block text-[clamp(3rem,8vw,9rem)] font-semibold uppercase leading-none tracking-[-0.08em] text-black/[0.08] transition-transform duration-700 group-hover:scale-105">
+                    <span className="block text-[clamp(2rem,5vw,5.5rem)] font-semibold uppercase leading-none tracking-[-0.08em] text-black/[0.08] transition-transform duration-700 group-hover:scale-105">
                       Project
                     </span>
 
-                    <span className="mt-2 block text-[9px] font-semibold uppercase tracking-[0.35em] text-black/25">
+                    <span className="mt-2 block text-[14px] font-semibold uppercase tracking-[0.35em] text-black/25">
                       Image coming soon
                     </span>
                   </div>
                 </div>
 
-                <div className="absolute left-5 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-[9px] font-semibold text-black backdrop-blur-sm">
+                <div className="absolute left-5 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-[14px] font-semibold text-black backdrop-blur-sm">
                   {project.number}
                 </div>
 
@@ -215,11 +215,11 @@ export default function WorkPage() {
               {/* Project information */}
               <div className="flex flex-col gap-4 border-b border-black/15 py-6 sm:flex-row sm:items-start sm:justify-between sm:py-7">
                 <div>
-                  <p className="mb-2 text-[9px] font-semibold uppercase tracking-[0.25em] text-[#e21d2b]">
+                  <p className="mb-2 text-[14px] font-semibold uppercase tracking-[0.25em] text-[#e21d2b]">
                     {project.category}
                   </p>
 
-                  <h2 className="text-[clamp(2rem,4vw,4rem)] font-semibold uppercase leading-[0.85] tracking-[-0.055em]">
+                  <h2 className="text-[clamp(2rem,5vw,5.5rem)] font-semibold uppercase leading-[0.85] tracking-[-0.055em]">
                     {project.title}
                   </h2>
                 </div>
@@ -240,7 +240,7 @@ export default function WorkPage() {
             <div className="flex items-start gap-3">
               <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/35">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/35">
                 Our approach
               </span>
             </div>
@@ -291,7 +291,7 @@ export default function WorkPage() {
                 key={item.number}
                 className="border-b border-white/10 p-7 first:border-l-0 sm:border-r sm:p-9 lg:p-10"
               >
-                <span className="text-[10px] tracking-[0.2em] text-white/25">
+                <span className="text-[14px] tracking-[0.2em] text-white/25">
                   {item.number}
                 </span>
 
@@ -313,7 +313,7 @@ export default function WorkPage() {
         <div className="mx-auto max-w-[1600px] border-t border-black/15 pt-7">
           <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
                 Your project could be next
               </span>
 
@@ -326,7 +326,7 @@ export default function WorkPage() {
 
             <Link
               href="/contact"
-              className="group flex w-fit items-center gap-4 text-[10px] font-semibold uppercase tracking-[0.25em]"
+              className="group flex w-fit items-center gap-4 text-[14px] font-semibold uppercase tracking-[0.25em]"
             >
               Start a project
 

@@ -34,7 +34,7 @@ export default function BrandingSubPage({ service }: Props) {
         <div className="relative z-10 mx-auto w-full max-w-[1600px]">
           <motion.div initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="mb-8 flex items-center gap-3">
             <span className="h-px w-10 bg-[#e21d2b]" />
-            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/40">
+            <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/40">
               {service.number} / {service.eyebrow}
             </span>
           </motion.div>
@@ -62,7 +62,7 @@ export default function BrandingSubPage({ service }: Props) {
       <section className="px-6 py-28 sm:px-10 sm:py-36 lg:px-14 lg:py-44">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
-            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">The service</span></div>
+            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">The service</span></div>
             <motion.div initial={{ opacity: 0, y: 35 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.8 }}>
               <p className="max-w-5xl text-[clamp(2rem,4vw,4.5rem)] font-medium leading-[1.02] tracking-[-0.045em] text-black/80">{service.introLead}</p>
               <p className="mt-10 max-w-2xl text-base leading-7 text-black/50">{service.introDescription}</p>
@@ -74,9 +74,9 @@ export default function BrandingSubPage({ service }: Props) {
       <section className="bg-[#0a0a0a] px-6 py-28 text-white sm:px-10 sm:py-36 lg:px-14 lg:py-44">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
-            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/35">{service.sectionLabel}</span></div>
+            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/35">{service.sectionLabel}</span></div>
             <div>
-              <h2 className="text-[clamp(4rem,8vw,8.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]">
+              <h2 className="text-[clamp(2rem,5vw,5.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]">
                 {sectionLines.map((line) => <span key={line} className="block">{line}</span>)}
                 <span className="text-[#e21d2b]">.</span>
               </h2>
@@ -88,7 +88,7 @@ export default function BrandingSubPage({ service }: Props) {
             {service.capabilities.map((capability, index) => (
               <motion.div key={capability} initial={{ opacity: 0, y: 25 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.05 }}
                 className="group flex min-h-[190px] flex-col justify-between border-b border-r border-white/10 p-6 transition-colors duration-500 hover:bg-[#e21d2b] sm:min-h-[220px] sm:p-8">
-                <span className="text-[10px] tracking-[0.2em] text-white/25 transition-colors group-hover:text-white/60">{String(index + 1).padStart(2, "0")}</span>
+                <span className="text-[14px] tracking-[0.2em] text-white/25 transition-colors group-hover:text-white/60">{String(index + 1).padStart(2, "0")}</span>
                 <div className="flex items-end justify-between gap-5">
                   <h3 className="text-xl font-semibold uppercase leading-[0.9] tracking-[-0.04em] sm:text-2xl">{capability}</h3>
                   <ArrowUpRight size={17} strokeWidth={1.4} className="shrink-0 transition-transform duration-500 group-hover:rotate-45" />
@@ -102,14 +102,14 @@ export default function BrandingSubPage({ service }: Props) {
       <section className="bg-[#e9e6df] px-6 py-28 sm:px-10 sm:py-36 lg:px-14 lg:py-44">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
-            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">Our process</span></div>
-            <h2 className="text-[clamp(4rem,8vw,8.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]">From<br />thinking<br />to<br />delivery<span className="text-[#e21d2b]">.</span></h2>
+            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">Our process</span></div>
+            <h2 className="text-[clamp(2rem,5vw,5.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]">From<br />thinking<br />to<br />delivery<span className="text-[#e21d2b]">.</span></h2>
           </div>
           <div className="mt-20 border-t border-black/15 lg:mt-28">
             {service.process.map((step, index) => (
               <motion.div key={step.number} initial={{ opacity: 0, y: 25 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6, delay: index * 0.05 }}
                 className="group grid gap-6 border-b border-black/15 py-8 sm:grid-cols-[70px_0.7fr_1.3fr] sm:items-center sm:py-10 lg:py-12">
-                <span className="text-[10px] tracking-[0.2em] text-black/30 transition-colors group-hover:text-[#e21d2b]">{step.number}</span>
+                <span className="text-[14px] tracking-[0.2em] text-black/30 transition-colors group-hover:text-[#e21d2b]">{step.number}</span>
                 <h3 className="text-[clamp(2.2rem,4vw,4.5rem)] font-semibold uppercase leading-[0.85] tracking-[-0.055em] transition-transform duration-500 group-hover:translate-x-2">{step.title}</h3>
                 <p className="max-w-lg text-sm leading-6 text-black/50 sm:text-base">{step.description}</p>
               </motion.div>
@@ -121,7 +121,7 @@ export default function BrandingSubPage({ service }: Props) {
       <section className="bg-[#0a0a0a] px-6 py-28 text-white sm:px-10 sm:py-36 lg:px-14 lg:py-44">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
-            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/35">The result</span></div>
+            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/35">The result</span></div>
             <motion.div initial={{ opacity: 0, y: 35 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
               <p className="max-w-5xl text-[clamp(2.4rem,5vw,5.5rem)] font-semibold uppercase leading-[0.88] tracking-[-0.06em]">
                 {resultLines.map((line) => <span key={line} className="block">{line}</span>)}

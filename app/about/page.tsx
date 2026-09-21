@@ -48,7 +48,7 @@ export default function AboutPage() {
       {/* ------------------------------------------------
           HERO
       ------------------------------------------------ */}
-      <section className="relative flex min-h-[85vh] items-end bg-[#0a0a0a] px-6 pb-20 pt-32 text-white sm:px-10 sm:pb-24 lg:px-14 lg:pb-28">
+      <section className="relative flex min-h-[85vh] items-start bg-[#0a0a0a] px-6 pb-20 pt-32 text-white sm:px-10 sm:pb-24 lg:px-14 lg:pb-28">
         <div className="mx-auto w-full max-w-[1600px]">
           <motion.div
             initial={{ opacity: 0, y: 25 }}
@@ -58,12 +58,12 @@ export default function AboutPage() {
           >
             <span className="h-px w-10 bg-[#e21d2b]" />
 
-            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/40">
+            <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/40">
               About Atria
             </span>
           </motion.div>
 
-          <div className="overflow-hidden">
+          <div className="overflow-hidden ">
             <motion.h1
               initial={{ y: "110%" }}
               animate={{ y: 0 }}
@@ -71,7 +71,7 @@ export default function AboutPage() {
                 duration: 1,
                 ease: [0.76, 0, 0.24, 1],
               }}
-              className="max-w-6xl text-[clamp(4rem,10vw,10rem)] font-semibold uppercase leading-[0.78] tracking-[-0.075em]"
+              className="max-w-3xl text-[clamp(2rem,5vw,5.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.075em]"
             >
               Not just
               <br />
@@ -91,27 +91,29 @@ export default function AboutPage() {
               We combine strategy, creative thinking and technology to solve
               real business problems through better digital experiences.
             </p>
-
-            <motion.div
-              animate={{ y: [0, 7, 0] }}
-              transition={{
-                duration: 1.6,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="hidden items-center gap-3 text-[9px] uppercase tracking-[0.3em] text-white/30 sm:flex"
-            >
-              Explore
-              <ArrowDown size={14} strokeWidth={1.4} />
-            </motion.div>
           </motion.div>
+
+          <motion.a
+            href="#intro"
+            animate={{ y: [0, 7, 0] }}
+            transition={{
+              duration: 1.6,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute bottom-20 right-6 hidden items-center gap-3 text-[9px] uppercase tracking-[0.3em] text-white/30 transition-colors hover:text-white sm:flex sm:bottom-24 sm:right-10 lg:bottom-28 lg:right-14"
+          >
+            Explore
+            <ArrowDown size={14} strokeWidth={1.4} />
+          </motion.a>
         </div>
+
       </section>
 
       {/* ------------------------------------------------
           INTRO
       ------------------------------------------------ */}
-      <section className="px-6 py-28 sm:px-10 sm:py-36 lg:px-14 lg:py-44">
+      <section id="intro" className="px-6 py-28 sm:px-10 sm:py-36 lg:px-14 lg:py-44">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
             <motion.div
@@ -123,7 +125,7 @@ export default function AboutPage() {
             >
               <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
                 What we believe
               </span>
             </motion.div>
@@ -134,7 +136,7 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <p className="max-w-5xl text-[clamp(2.1rem,4.2vw,4.6rem)] font-medium leading-[1.02] tracking-[-0.045em] text-black/80">
+              <p className="max-w-3xl text-[clamp(2rem,5vw,5.5rem)] font-medium leading-[1.02] tracking-[-0.045em] text-black/80">
                 Digital should make a business easier to understand, easier
                 to trust and easier to choose.
               </p>
@@ -158,13 +160,13 @@ export default function AboutPage() {
             <div className="flex items-start gap-3">
               <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
                 Our approach
               </span>
             </div>
 
             <div>
-              <h2 className="text-[clamp(4rem,8vw,8.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em] text-[#0a0a0a]">
+              <h2 className="text-[clamp(2rem,5vw,5.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em] text-[#0a0a0a]">
                 We listen.
                 <br />
                 We think.
@@ -189,11 +191,11 @@ export default function AboutPage() {
                 }}
                 className="group grid gap-6 border-b border-black/15 py-8 sm:grid-cols-[70px_0.8fr_1.2fr] sm:items-center sm:py-10 lg:py-12"
               >
-                <span className="text-[10px] tracking-[0.2em] text-black/30 transition-colors group-hover:text-[#e21d2b]">
+                <span className="text-[14px] tracking-[0.2em] text-black/30 transition-colors group-hover:text-[#e21d2b]">
                   {principle.number}
                 </span>
 
-                <h3 className="text-[clamp(2.2rem,4.5vw,4.8rem)] font-semibold uppercase leading-[0.85] tracking-[-0.055em] transition-colors duration-300 group-hover:text-[#e21d2b]">
+                <h3 className="text-[clamp(2rem,5vw,5.5rem)] font-semibold uppercase leading-[0.85] tracking-[-0.055em] transition-colors duration-300 group-hover:text-[#e21d2b]">
                   {principle.title}
                 </h3>
 
@@ -215,13 +217,13 @@ export default function AboutPage() {
             <div className="flex items-start gap-3">
               <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/35">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/35">
                 What we do
               </span>
             </div>
 
             <div>
-              <h2 className="text-[clamp(4rem,8vw,8.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]">
+              <h2 className="text-[clamp(2rem,5vw,5.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]">
                 One team.
                 <br />
                 Many
@@ -251,7 +253,7 @@ export default function AboutPage() {
                 }}
                 className="group flex min-h-[180px] flex-col justify-between border-b border-r border-white/10 p-6 transition-colors duration-500 hover:bg-[#e21d2b] sm:min-h-[210px] sm:p-8"
               >
-                <span className="text-[10px] tracking-[0.2em] text-white/25 transition-colors group-hover:text-white/60">
+                <span className="text-[14px] tracking-[0.2em] text-white/25 transition-colors group-hover:text-white/60">
                   0{index + 1}
                 </span>
 
@@ -283,12 +285,12 @@ export default function AboutPage() {
                 <div className="flex items-center gap-3">
                   <span className="h-px w-10 bg-[#e21d2b]" />
 
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+                  <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
                     The people
                   </span>
                 </div>
 
-                <h2 className="mt-6 max-w-4xl text-[clamp(3rem,6vw,6.5rem)] font-semibold uppercase leading-[0.8] tracking-[-0.07em]">
+                <h2 className="mt-6 max-w-3xl text-[clamp(2rem,5vw,5.5rem)] font-semibold uppercase leading-[0.8] tracking-[-0.07em]">
                   Small team.
                   <br />
                   Big thinking<span className="text-[#e21d2b]">.</span>
@@ -303,7 +305,7 @@ export default function AboutPage() {
 
               <a
                 href="/team"
-                className="group flex w-fit shrink-0 items-center gap-4 text-[10px] font-semibold uppercase tracking-[0.25em]"
+                className="group flex w-fit shrink-0 items-center gap-4 text-[14px] font-semibold uppercase tracking-[0.25em]"
               >
                 Meet the team
 
@@ -327,20 +329,20 @@ export default function AboutPage() {
         <div className="mx-auto max-w-[1600px] border-t border-black/15 pt-7">
           <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
-                Let's work together
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
+                Let&apos;s work together
               </span>
 
               <h2 className="mt-5 text-[clamp(2.5rem,5vw,5rem)] font-semibold uppercase leading-[0.85] tracking-[-0.06em]">
                 Have an idea?
                 <br />
-                Let's talk<span className="text-[#e21d2b]">.</span>
+                Let&apos;s talk<span className="text-[#e21d2b]">.</span>
               </h2>
             </div>
 
             <a
               href="/contact"
-              className="group flex w-fit items-center gap-4 text-[10px] font-semibold uppercase tracking-[0.25em]"
+              className="group flex w-fit items-center gap-4 text-[14px] font-semibold uppercase tracking-[0.25em]"
             >
               Start a project
 

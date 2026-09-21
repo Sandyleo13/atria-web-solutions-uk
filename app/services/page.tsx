@@ -77,7 +77,7 @@ export default function ServicesPage() {
           >
             <span className="h-px w-10 bg-[#e21d2b]" />
 
-            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/40">
+            <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/40">
               What we do
             </span>
           </motion.div>
@@ -90,7 +90,7 @@ export default function ServicesPage() {
                 duration: 1,
                 ease: [0.76, 0, 0.24, 1],
               }}
-              className="max-w-6xl text-[clamp(4rem,10vw,10rem)] font-semibold uppercase leading-[0.76] tracking-[-0.075em]"
+              className="max-w-3xl text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.76] tracking-[-0.075em]"
             >
               Digital
               <br />
@@ -118,7 +118,7 @@ export default function ServicesPage() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="hidden items-center gap-3 text-[9px] uppercase tracking-[0.3em] text-white/30 sm:flex"
+              className="hidden items-center gap-3 text-[14px] uppercase tracking-[0.3em] text-white/30 sm:flex"
             >
               Explore services
               <ArrowDown size={14} strokeWidth={1.4} />
@@ -134,12 +134,12 @@ export default function ServicesPage() {
             <div className="flex items-start gap-3">
               <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
                 Our services
               </span>
             </div>
 
-            <p className="max-w-3xl text-[clamp(1.8rem,3.5vw,3.5rem)] font-medium leading-[1.05] tracking-[-0.04em] text-black/75">
+            <p className="max-w-3xl text-[clamp(2.5rem,5vw,5.5rem)] font-medium leading-[1.05] tracking-[-0.04em] text-black/75">
               Different businesses need different solutions. We bring together
               the right capabilities to solve the problem in front of us.
             </p>
@@ -159,7 +159,7 @@ export default function ServicesPage() {
                 }}
                 className="group grid gap-6 border-b border-black/15 py-9 transition-colors duration-500 hover:bg-[#0a0a0a] hover:text-white sm:grid-cols-[70px_minmax(0,1fr)_minmax(220px,0.55fr)_auto] sm:items-center sm:py-11 lg:py-14"
               >
-                <span className="text-[10px] tracking-[0.2em] text-black/30 transition-colors duration-500 group-hover:text-white/30">
+                <span className="text-[14px] tracking-[0.2em] text-black/30 transition-colors duration-500 group-hover:text-white/30">
                   {service.number}
                 </span>
 
@@ -169,11 +169,11 @@ export default function ServicesPage() {
                     <span className="text-[#e21d2b]">.</span>
                   </h2>
 
-                  <p className="mt-4 text-[10px] uppercase tracking-[0.22em] text-black/40 transition-colors duration-500 group-hover:text-white/40">
+                  <p className="mt-4 text-[14px] uppercase tracking-[0.22em] text-black/40 transition-colors duration-500 group-hover:text-white/40">
                     {service.short}
                   </p>
 
-                  <p className="mt-5 max-w-2xl text-sm leading-6 text-black/45 transition-colors duration-500 group-hover:text-white/50 sm:hidden">
+                  <p className="mt-5 max-w-2xl text-[14px] leading-6 text-black/45 transition-colors duration-500 group-hover:text-white/50 sm:hidden">
                     {service.description}
                   </p>
                 </div>
@@ -185,7 +185,7 @@ export default function ServicesPage() {
                   />
                 </span>
 
-                <div className="hidden max-w-sm text-sm leading-6 text-black/40 transition-colors duration-500 group-hover:text-white/50 sm:block">
+                <div className="hidden max-w-sm text-[14px] leading-6 text-black/40 transition-colors duration-500 group-hover:text-white/50 sm:block">
                   {service.description}
                 </div>
               </motion.a>
@@ -207,13 +207,13 @@ export default function ServicesPage() {
             <div className="flex items-start gap-3">
               <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
                 Our approach
               </span>
             </div>
 
             <div>
-              <p className="max-w-5xl text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.88] tracking-[-0.06em]">
+              <p className="max-w-3xl text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.88] tracking-[-0.06em]">
                 We don't sell
                 <br />
                 solutions before
@@ -238,7 +238,7 @@ export default function ServicesPage() {
         <div className="mx-auto max-w-[1600px] border-t border-black/15 pt-7">
           <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
                 Need a digital partner?
               </span>
 
@@ -249,7 +249,7 @@ export default function ServicesPage() {
 
             <a
               href="/contact"
-              className="group flex w-fit items-center gap-4 text-[10px] font-semibold uppercase tracking-[0.25em]"
+              className="group flex w-fit items-center gap-4 text-[14px] font-semibold uppercase tracking-[0.25em]"
             >
               Start a project
               <span className="flex h-11 w-11 items-center justify-center rounded-full border border-black/20 transition-all duration-300 group-hover:border-[#e21d2b] group-hover:bg-[#e21d2b] group-hover:text-white">
