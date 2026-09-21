@@ -55,7 +55,7 @@ export default function Industries() {
           >
             <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+            <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
               04 / Who We Work With
             </span>
           </motion.div>
@@ -68,7 +68,7 @@ export default function Industries() {
               duration: 0.9,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="max-w-6xl text-[clamp(3.5rem,8vw,8.5rem)] font-semibold uppercase leading-[0.8] tracking-[-0.07em] text-[#0a0a0a]"
+            className="max-w-3xl text-[clamp(2rem,5vw,5.5rem)] font-semibold uppercase leading-[0.8] tracking-[-0.07em] text-[#0a0a0a]"
           >
             We work with
             <br />
@@ -87,8 +87,8 @@ export default function Industries() {
           transition={{ duration: 0.7, delay: 0.1 }}
           className="mt-16 grid gap-8 border-t border-black/15 pt-7 sm:grid-cols-2 lg:mt-24 lg:grid-cols-[0.7fr_1.3fr]"
         >
-          <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/35">
-            Across industries
+            <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/45">
+              Across industries
           </span>
 
           <p className="max-w-2xl text-lg leading-7 tracking-[-0.02em] text-black/55 sm:text-xl lg:text-2xl lg:leading-9">
@@ -183,7 +183,7 @@ export default function Industries() {
 
           <Link
             href="/contact"
-            className="group flex w-fit items-center gap-4 text-[10px] font-semibold uppercase tracking-[0.25em]"
+            className="group flex w-fit items-center gap-4 text-[14px] font-semibold uppercase tracking-[0.25em]"
           >
             Start a conversation
 

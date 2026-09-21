@@ -4,13 +4,10 @@ import { motion } from "framer-motion";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 
 import TeamSection from "../components/about/TeamSection";
-import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
 
 export default function TeamPage() {
   return (
     <main className="overflow-hidden bg-[#f4f2ed]">
-      <Navbar />
 
       {/* =====================================================
           HERO
@@ -152,7 +149,6 @@ export default function TeamPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

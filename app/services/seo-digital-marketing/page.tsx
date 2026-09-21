@@ -3,8 +3,6 @@
 import { motion } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Check } from "lucide-react";
 import Link from "next/link";
-import Navbar from "../../components/layout/Navbar";
-import Footer from "../../components/layout/Footer";
 
 const capabilities = [
   {
@@ -90,7 +88,6 @@ const relatedServices = [
 export default function SeoDigitalMarketingPage() {
   return (
     <main className="overflow-hidden bg-[#f4f2ed]">
-      <Navbar />
 
       {/* =====================================================
           HERO
@@ -541,7 +538,6 @@ export default function SeoDigitalMarketingPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

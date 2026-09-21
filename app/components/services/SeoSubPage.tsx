@@ -10,8 +10,6 @@ import {
 
 import type { SeoService } from "../../../data/seo";
 
-import Navbar from "../layout/Navbar";
-import Footer from "../layout/Footer";
 
 type Props = {
   service: SeoService;
@@ -20,7 +18,6 @@ type Props = {
 export default function SeoSubPage({ service }: Props) {
   return (
     <main className="overflow-hidden bg-[#f4f2ed]">
-      <Navbar />
 
       {/* HERO */}
       <section className="relative flex min-h-screen items-end overflow-hidden bg-[#0a0a0a] px-6 pb-20 pt-32 text-white sm:px-10 sm:pb-24 lg:px-14 lg:pb-28">
@@ -368,7 +365,6 @@ export default function SeoSubPage({ service }: Props) {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

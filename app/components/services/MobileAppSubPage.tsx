@@ -3,8 +3,6 @@
 import { motion } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Check } from "lucide-react";
 import Link from "next/link";
-import Navbar from "../layout/Navbar";
-import Footer from "../layout/Footer";
 import type { MobileSubService } from "../../../data/mobile";
 
 type Props = {
@@ -20,7 +18,6 @@ const relatedServices = [
 export default function MobileAppSubPage({ service }: Props) {
   return (
     <main className="overflow-hidden bg-[#f4f2ed]">
-      <Navbar />
 
       <section className="relative flex min-h-[85vh] items-end bg-[#0a0a0a] px-6 pb-20 pt-32 text-white sm:px-10 sm:pb-24 lg:px-14 lg:pb-28">
         <div className="pointer-events-none absolute inset-0 opacity-40 [background-image:linear-gradient(rgba(255,255,255,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.045)_1px,transparent_1px)] [background-size:80px_80px]" />
@@ -220,7 +217,6 @@ export default function MobileAppSubPage({ service }: Props) {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

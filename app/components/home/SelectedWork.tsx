@@ -49,7 +49,7 @@ export default function SelectedWork() {
           >
             <span className="h-px w-10 bg-[#e21d2b]" />
 
-            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/40">
+            <span className="text-[15px] font-semibold uppercase tracking-[0.3em] text-white/40">
               03 / Selected Work
             </span>
           </motion.div>
@@ -62,11 +62,9 @@ export default function SelectedWork() {
               duration: 0.9,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="text-[clamp(4rem,9vw,9.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]"
+            className="text-[clamp(2rem,5vw,5.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]"
           >
-            Selected
-            <br />
-            Work<span className="text-[#e21d2b]">.</span>
+            Selected Work<span className="text-[#e21d2b]">.</span>
           </motion.h2>
         </div>
 

@@ -53,7 +53,7 @@ export default function WhyAtria() {
           >
             <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/40">
+            <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/40">
               05 / Why Atria
             </span>
           </motion.div>
@@ -66,11 +66,9 @@ export default function WhyAtria() {
               duration: 0.9,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="max-w-6xl text-[clamp(4rem,9vw,9.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]"
+            className="max-w-3xl text-[clamp(2rem,5vw,5.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]"
           >
-            Why
-            <br />
-            Atria<span className="text-[#e21d2b]">?</span>
+            Why Atria<span className="text-[#e21d2b]">?</span>
           </motion.h2>
         </div>
 
@@ -82,11 +80,11 @@ export default function WhyAtria() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="mt-16 grid gap-8 border-t border-white/15 pt-7 lg:mt-24 lg:grid-cols-[0.7fr_1.3fr]"
         >
-          <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/35">
+          <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/35">
             Our thinking
           </span>
 
-          <p className="max-w-4xl text-[clamp(1.8rem,3.5vw,3.8rem)] font-medium leading-[1.05] tracking-[-0.04em] text-white/85">
+          <p className="max-w-3xl text-[clamp(1.25rem,3.1vw,3.3rem)] font-medium leading-[1.05] tracking-[-0.04em] text-white/85">
             Good digital work is more than how it looks. It should make your
             business clearer, stronger and easier to choose.
           </p>
@@ -218,7 +216,7 @@ export default function WhyAtria() {
 
           <a
             href="/about"
-            className="group flex w-fit items-center gap-4 text-[10px] font-semibold uppercase tracking-[0.25em]"
+            className="group flex w-fit items-center gap-4 text-[14px] font-semibold uppercase tracking-[0.25em]"
           >
             More about Atria
 
