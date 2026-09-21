@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   title: "Atria Web Solutions | Digital Experiences That Move Businesses",
   description:
     "Atria Web Solutions creates high-performing websites, digital experiences and technology solutions for ambitious businesses in the UK.",
+  icons: {
+    icon: "/icons/favicon.ico",
+  },
 };
 
 export default function RootLayout({
