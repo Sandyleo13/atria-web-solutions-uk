@@ -2,1456 +2,1524 @@
 
 import { useEffect, useRef } from "react";
 
-export type TechNode = {
-  id: string;
-  label: string;
-  shortLabel: string;
-  x: number;
-  y: number;
-};
+/* ============================================================
+   SERVICE NODES
+============================================================ */
 
-type Props = {
-  nodes: TechNode[];
-  mouseX?: number;
-  mouseY?: number;
-  hoveredNode?: string | null;
-};
+const NODES = [
+  {
+    key: "web",
+    label: ["WEB", "DEVELOPMENT"],
+    angle: -72,
+    dist: 0.30,
+    labelSide: "left",
+  },
+  {
+    key: "seo",
+    label: ["SEO"],
+    angle: -28,
+    dist: 0.36,
+    labelSide: "right",
+  },
+  {
+    key: "marketing",
+    label: ["MARKETING"],
+    angle: 8,
+    dist: 0.43,
+    labelSide: "right",
+  },
+  {
+    key: "ai",
+    label: ["AI &", "AUTOMATION"],
+    angle: 38,
+    dist: 0.47,
+    labelSide: "right",
+  },
+  {
+    key: "mobile",
+    label: ["MOBILE APPS"],
+    angle: 68,
+    dist: 0.39,
+    labelSide: "right",
+  },
+  {
+    key: "commerce",
+    label: ["E-COMMERCE"],
+    angle: 118,
+    dist: 0.34,
+    labelSide: "right",
+  },
+  {
+    key: "strategy",
+    label: ["STRATEGY"],
+    angle: 168,
+    dist: 0.32,
+    labelSide: "left",
+  },
+] as const;
 
-type Particle = {
-  x: number;
-  y: number;
-  baseX: number;
-  baseY: number;
-  vx: number;
-  vy: number;
-  size: number;
-  alpha: number;
-  phase: number;
-  speed: number;
-  twinkle: number;
-  core: boolean;
-};
+/* ============================================================
+   SEEDED RANDOM
+   Keeps the network identical between renders.
+============================================================ */
 
-type CoreDot = {
-  angle: number;
-  radius: number;
-  speed: number;
-  size: number;
-  alpha: number;
-};
+function seeded(seed: number) {
+  let s = seed;
+
+  return () => {
+    s = (s * 16807) % 2147483647;
+    return (s - 1) / 2147483646;
+  };
+}
+
+/* ============================================================
+   TYPES
+============================================================ */
 
 type Point = {
   x: number;
   y: number;
+  r: number;
+  alpha: number;
+  phase: number;
+  speed: number;
 };
 
-const TAU = Math.PI * 2;
+type Edge = {
+  a: number;
+  b: number;
+  alpha: number;
+};
 
-/* -------------------------------------------------------------------------- */
-/* Helpers                                                                    */
-/* -------------------------------------------------------------------------- */
+/* ============================================================
+   COMPONENT
+============================================================ */
 
-function seeded(seed: number) {
-  let value = seed;
-
-  return () => {
-    value =
-      (value * 16807) %
-      2147483647;
-
-    return (
-      (value - 1) /
-      2147483646
-    );
-  };
-}
-
-function clamp(
-  value: number,
-  min: number,
-  max: number
-) {
-  return Math.max(
-    min,
-    Math.min(max, value)
-  );
-}
-
-function getAnchor(
-  node: TechNode
-): Point {
-  /*
-   * IMPORTANT:
-   * Use the exact same coordinates
-   * as the HTML service nodes in Hero.
-   */
-  return {
-    x: node.x,
-    y: node.y,
-  };
-}
-
-/* -------------------------------------------------------------------------- */
-/* Component                                                                  */
-/* -------------------------------------------------------------------------- */
-
-export default function ParticleNetwork({
-  nodes,
-  mouseX = 0,
-  mouseY = 0,
-  hoveredNode = null,
-}: Props) {
-  const canvasRef =
-    useRef<HTMLCanvasElement | null>(
-      null
-    );
-
-  const mouseRef = useRef({
-    x: 0,
-    y: 0,
-    active: false,
-  });
-
-  /*
-   * Keep hover state available without
-   * constantly rebuilding the canvas.
-   */
-  const hoveredRef =
-    useRef<string | null>(
-      hoveredNode
-    );
+export default function ParticleNetwork() {
+  const staticCanvasRef = useRef<HTMLCanvasElement>(null);
+  const animationCanvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    hoveredRef.current =
-      hoveredNode;
-  }, [hoveredNode]);
+    const staticCanvas = staticCanvasRef.current;
+    const animationCanvas = animationCanvasRef.current;
 
-  useEffect(() => {
-    const canvas =
-      canvasRef.current;
+    if (!staticCanvas || !animationCanvas) return;
 
-    if (!canvas) return;
+    const staticCtx = staticCanvas.getContext("2d", {
+      alpha: true,
+    });
 
-    const ctx =
-      canvas.getContext("2d", {
-        alpha: true,
-        desynchronized: true,
-      });
+    const ctx = animationCanvas.getContext("2d", {
+      alpha: true,
+    });
 
-    if (!ctx) return;
+    if (!staticCtx || !ctx) return;
 
-    let width = 0;
-    let height = 0;
+    let W = 0;
+    let H = 0;
     let dpr = 1;
 
     let raf = 0;
-    let destroyed = false;
-    let visible = true;
-
-    let lastFrame = 0;
     let time = 0;
 
-    /* ---------------------------------------------------------------------- */
-    /* Performance                                                            */
-    /* ---------------------------------------------------------------------- */
+    let isVisible = true;
 
-    const reducedMotion =
-      window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
+    let touchedNode: string | null = null;
 
-    const mobile =
-      window.matchMedia(
-        "(max-width: 767px)"
-      ).matches;
+    /* ========================================================
+       REDUCED MOTION
+    ======================================================== */
 
-    /*
-     * Considerably lighter than the
-     * previous 235 particle setup.
-     */
-    const particleCount =
-      mobile ? 45 : 170;
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
 
-    const coreParticleCount =
-      mobile ? 12 : 42;
+    /* ========================================================
+       PARTICLE DATA
+    ======================================================== */
 
-    const connectionDistance =
-      mobile ? 95 : 145;
+    const rng = seeded(82473);
 
-    const maxConnections =
-      mobile ? 2 : 4;
+    const particles: Point[] = [];
+    const edges: Edge[] = [];
 
     /*
-     * Target roughly 45 FPS instead
-     * of rendering unnecessary 60+ FPS.
-     */
-    const frameInterval =
-      mobile
-        ? 1000 / 30
-        : 1000 / 45;
+      Dense central network.
 
-    const particles: Particle[] =
-      [];
+      The screenshot has most of the activity around the
+      right side of the hero, rather than the entire canvas.
+    */
 
-    const coreDots: CoreDot[] =
-      [];
+    const PARTICLE_COUNT = 185;
 
-    let centerX = 0;
-    let centerY = 0;
-
-    /* ---------------------------------------------------------------------- */
-    /* Spatial grid                                                           */
-    /* ---------------------------------------------------------------------- */
-
-    const CELL_SIZE =
-      connectionDistance;
-
-    const grid = new Map<
-      string,
-      number[]
-    >();
-
-    const getCellKey = (
-      x: number,
-      y: number
-    ) => {
-      const gx =
-        Math.floor(
-          x / CELL_SIZE
-        );
-
-      const gy =
-        Math.floor(
-          y / CELL_SIZE
-        );
-
-      return `${gx}:${gy}`;
-    };
-
-    const rebuildGrid = () => {
-      grid.clear();
-
-      for (
-        let i = 0;
-        i < particles.length;
-        i++
-      ) {
-        const particle =
-          particles[i];
-
-        const key =
-          getCellKey(
-            particle.x,
-            particle.y
-          );
-
-        const bucket =
-          grid.get(key);
-
-        if (bucket) {
-          bucket.push(i);
-        } else {
-          grid.set(key, [i]);
-        }
-      }
-    };
-
-    /* ---------------------------------------------------------------------- */
-    /* Resize                                                                 */
-    /* ---------------------------------------------------------------------- */
-
-    const createParticles = () => {
-      const rng = seeded(
-        Math.floor(
-          width * 17 +
-            height * 31
-        ) || 82473
-      );
-
-      particles.length = 0;
-
-      const radiusX =
-        Math.min(
-          width * 0.52,
-          850
-        );
-
-      const radiusY =
-        Math.min(
-          height * 0.44,
-          440
-        );
-
-      for (
-        let i = 0;
-        i < particleCount;
-        i++
-      ) {
-        const angle =
-          rng() * TAU;
-
-        const distance =
-          rng() < 0.74
-            ? Math.pow(
-                rng(),
-                0.72
-              ) * 0.78
-            : 0.78 +
-              rng() * 0.22;
-
-        const horizontalScale =
-          0.78 +
-          rng() * 0.42;
-
-        const verticalScale =
-          0.78 +
-          rng() * 0.32;
-
-        const x =
-          centerX +
-          Math.cos(angle) *
-            radiusX *
-            distance *
-            horizontalScale;
-
-        const y =
-          centerY +
-          Math.sin(angle) *
-            radiusY *
-            distance *
-            verticalScale;
-
-        particles.push({
-          x,
-          y,
-
-          baseX: x,
-          baseY: y,
-
-          vx:
-            (rng() - 0.5) *
-            0.1,
-
-          vy:
-            (rng() - 0.5) *
-            0.1,
-
-          size:
-            rng() > 0.86
-              ? 1.35 +
-                rng() * 1.3
-              : 0.55 +
-                rng() * 0.85,
-
-          alpha:
-            0.22 +
-            rng() * 0.58,
-
-          phase:
-            rng() * TAU,
-
-          speed:
-            0.00035 +
-            rng() * 0.0009,
-
-          twinkle:
-            0.5 +
-            rng() * 1.4,
-
-          core:
-            distance < 0.35,
-        });
-      }
-    };
-
-    const createCoreDots = () => {
-      const rng =
-        seeded(19473);
-
-      coreDots.length = 0;
-
-      const radius =
-        Math.min(
-          width,
-          height
-        ) * 0.18;
-
-      for (
-        let i = 0;
-        i < coreParticleCount;
-        i++
-      ) {
-        coreDots.push({
-          angle:
-            rng() * TAU,
-
-          radius:
-            Math.pow(
-              rng(),
-              1.65
-            ) * radius,
-
-          speed:
-            (0.00035 +
-              rng() *
-                0.00065) *
-            (rng() > 0.5
-              ? 1
-              : -1),
-
-          size:
-            0.55 +
-            rng() * 1.2,
-
-          alpha:
-            0.42 +
-            rng() * 0.4,
-        });
-      }
-    };
-
-    const resize = () => {
-      const rect =
-        canvas.getBoundingClientRect();
-
-      width = rect.width;
-      height = rect.height;
-
-      if (
-        width <= 0 ||
-        height <= 0
-      ) {
-        return;
-      }
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const angle = rng() * Math.PI * 2;
 
       /*
-       * Lower DPR saves a lot of
-       * canvas fill/stroke work.
-       */
-      dpr = Math.min(
-        window.devicePixelRatio ||
-          1,
-        mobile ? 1 : 1.25
-      );
+        Elliptical distribution around the center.
+      */
 
-      canvas.width =
-        Math.round(
-          width * dpr
-        );
+      const radius = Math.pow(rng(), 0.62);
 
-      canvas.height =
-        Math.round(
-          height * dpr
-        );
+      const x =
+        0.665 +
+        Math.cos(angle) * radius * (0.34 + rng() * 0.15);
 
-      ctx.setTransform(
-        dpr,
-        0,
-        0,
-        dpr,
-        0,
-        0
-      );
+      const y =
+        0.455 +
+        Math.sin(angle) * radius * (0.32 + rng() * 0.10);
 
-      centerX =
-        width * 0.69;
+      particles.push({
+        x,
+        y,
+        r: 0.8 + rng() * 2,
+        alpha: 0.28 + rng() * 0.72,
+        phase: rng() * Math.PI * 2,
+        speed: 0.0008 + rng() * 0.0018,
+      });
+    }
 
-      centerY =
-        height * 0.49;
+    /*
+      Add a second outer cloud of faint particles.
+    */
 
-      createParticles();
-      createCoreDots();
+    for (let i = 0; i < 100; i++) {
+      particles.push({
+        x: 0.38 + rng() * 0.59,
+        y: 0.08 + rng() * 0.78,
+        r: 0.55 + rng() * 1.5,
+        alpha: 0.14 + rng() * 0.42,
+        phase: rng() * Math.PI * 2,
+        speed: 0.0005 + rng() * 0.0012,
+      });
+    }
+
+    /*
+      Build deterministic connections.
+
+      We calculate this once instead of checking every pair
+      on every animation frame.
+    */
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i];
+        const b = particles[j];
+
+        const dx = (a.x - b.x) * 1536;
+        const dy = (a.y - b.y) * 1024;
+
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 125 && rng() > 0.42) {
+          edges.push({
+            a: i,
+            b: j,
+            alpha: 0.04 + rng() * 0.13,
+          });
+        }
+      }
+    }
+
+    /* ========================================================
+       RESIZE
+    ======================================================== */
+
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+
+      const rect = animationCanvas.getBoundingClientRect();
+
+      W = rect.width;
+      H = rect.height;
+
+      for (const canvas of [staticCanvas, animationCanvas]) {
+        canvas.width = Math.floor(W * dpr);
+        canvas.height = Math.floor(H * dpr);
+
+        canvas.style.width = `${W}px`;
+        canvas.style.height = `${H}px`;
+      }
+
+      staticCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      drawStaticNetwork();
     };
 
-    /* ---------------------------------------------------------------------- */
-    /* Mouse                                                                   */
-    /* ---------------------------------------------------------------------- */
+    /* ========================================================
+       CORE POSITION
+    ======================================================== */
 
-    const getMouse = () => ({
-      x:
-        mouseRef.current.x *
-        width,
+    const getCore = () => {
+      /*
+        Desktop reference:
+        X ≈ 65.5%
+        Y ≈ 44%
+      */
 
-      y:
-        mouseRef.current.y *
-        height,
+      const desktop = W >= 900;
 
-      active:
-        mouseRef.current.active,
-    });
+      const baseX = desktop ? W * 0.655 : W * 0.58;
+      const baseY = desktop ? H * 0.445 : H * 0.42;
 
-    const updateParticles =
-      () => {
-        const mouse =
-          getMouse();
-
-        for (
-          const particle of
-            particles
-        ) {
-          if (!reducedMotion) {
-            particle.phase +=
-              particle.speed;
-
-            const targetX =
-              particle.baseX +
-              Math.cos(
-                particle.phase
-              ) *
-                0.22;
-
-            const targetY =
-              particle.baseY +
-              Math.sin(
-                particle.phase *
-                  0.85
-              ) *
-                0.16;
-
-            particle.vx +=
-              (targetX -
-                particle.x) *
-              0.00085;
-
-            particle.vy +=
-              (targetY -
-                particle.y) *
-              0.00085;
-
-            particle.vx *=
-              0.986;
-
-            particle.vy *=
-              0.986;
-
-            particle.x +=
-              particle.vx;
-
-            particle.y +=
-              particle.vy;
-          }
-
-          if (mouse.active) {
-            const dx =
-              particle.x -
-              mouse.x;
-
-            const dy =
-              particle.y -
-              mouse.y;
-
-            const distance =
-              Math.sqrt(
-                dx * dx +
-                  dy * dy
-              );
-
-            if (
-              distance < 120 &&
-              distance > 1
-            ) {
-              const force =
-                (1 -
-                  distance /
-                    120) *
-                0.18;
-
-              particle.x +=
-                (dx / distance) *
-                force;
-
-              particle.y +=
-                (dy / distance) *
-                force;
-            }
-          }
-        }
+      return {
+        x: baseX,
+        y: baseY,
       };
+    };
 
-    /* ---------------------------------------------------------------------- */
-    /* Optimized particle connections                                         */
-    /* ---------------------------------------------------------------------- */
+    /* ========================================================
+       NODE POSITION
+    ======================================================== */
 
-    const drawConnections =
-      () => {
-        const activeMouse =
-          getMouse();
+    const getNodePosition = (
+      node: (typeof NODES)[number]
+    ) => {
+      const { x: cx, y: cy } = getCore();
 
-        rebuildGrid();
+      const desktop = W >= 900;
 
-        for (
-          let i = 0;
-          i < particles.length;
-          i++
-        ) {
-          const a =
-            particles[i];
+      /*
+        On desktop use a radius based primarily on width.
+        This gives a much closer match to the reference.
+      */
 
-          const gx =
-            Math.floor(
-              a.x / CELL_SIZE
-            );
+      const radius = desktop
+        ? Math.min(W * 0.94, H * 0.98)
+        : Math.min(W * 0.82, H * 0.56);
 
-          const gy =
-            Math.floor(
-              a.y / CELL_SIZE
-            );
+      const angle = (node.angle * Math.PI) / 180;
 
-          let connected = 0;
-
-          /*
-           * Only inspect nearby cells instead
-           * of every other particle.
-           */
-          for (
-            let ox = -1;
-            ox <= 1;
-            ox++
-          ) {
-            for (
-              let oy = -1;
-              oy <= 1;
-              oy++
-            ) {
-              if (
-                connected >=
-                maxConnections
-              ) {
-                break;
-              }
-
-              const bucket =
-                grid.get(
-                  `${gx + ox}:${
-                    gy + oy
-                  }`
-                );
-
-              if (!bucket) {
-                continue;
-              }
-
-              for (
-                const j of bucket
-              ) {
-                if (
-                  j <= i ||
-                  connected >=
-                    maxConnections
-                ) {
-                  continue;
-                }
-
-                const b =
-                  particles[j];
-
-                const dx =
-                  a.x - b.x;
-
-                const dy =
-                  a.y - b.y;
-
-                const distanceSq =
-                  dx * dx +
-                  dy * dy;
-
-                const maxDistanceSq =
-                  connectionDistance *
-                  connectionDistance;
-
-                if (
-                  distanceSq >=
-                  maxDistanceSq
-                ) {
-                  continue;
-                }
-
-                const distance =
-                  Math.sqrt(
-                    distanceSq
-                  );
-
-                let alpha =
-                  (1 -
-                    distance /
-                      connectionDistance) *
-                  (a.core ||
-                  b.core
-                    ? 0.26
-                    : 0.15);
-
-                if (
-                  activeMouse.active
-                ) {
-                  const midX =
-                    (a.x + b.x) *
-                    0.5;
-
-                  const midY =
-                    (a.y + b.y) *
-                    0.5;
-
-                  const mouseDistance =
-                    Math.hypot(
-                      midX -
-                        activeMouse.x,
-                      midY -
-                        activeMouse.y
-                    );
-
-                  if (
-                    mouseDistance <
-                    150
-                  ) {
-                    alpha +=
-                      (1 -
-                        mouseDistance /
-                          150) *
-                      0.14;
-                  }
-                }
-
-                /*
-                 * Glow.
-                 */
-                ctx.beginPath();
-
-                ctx.moveTo(
-                  a.x,
-                  a.y
-                );
-
-                ctx.lineTo(
-                  b.x,
-                  b.y
-                );
-
-                ctx.strokeStyle =
-                  `rgba(65,125,255,${
-                    clamp(
-                      alpha *
-                        0.28,
-                      0.01,
-                      0.11
-                    )
-                  })`;
-
-                ctx.lineWidth =
-                  distance < 65
-                    ? 3
-                    : 2;
-
-                ctx.stroke();
-
-                /*
-                 * Main network line.
-                 */
-                ctx.beginPath();
-
-                ctx.moveTo(
-                  a.x,
-                  a.y
-                );
-
-                ctx.lineTo(
-                  b.x,
-                  b.y
-                );
-
-                ctx.strokeStyle =
-                  `rgba(105,155,255,${
-                    clamp(
-                      alpha,
-                      0.035,
-                      0.38
-                    )
-                  })`;
-
-                ctx.lineWidth =
-                  distance < 65
-                    ? 1.35
-                    : 0.8;
-
-                ctx.stroke();
-
-                connected++;
-              }
-            }
-          }
-        }
+      return {
+        x: cx + Math.cos(angle) * radius * node.dist,
+        y: cy + Math.sin(angle) * radius * node.dist,
       };
+    };
 
-    /* ---------------------------------------------------------------------- */
-    /* Particles                                                               */
-    /* ---------------------------------------------------------------------- */
+    /* ========================================================
+       ICON DRAWING
+    ======================================================== */
 
-    const drawParticles =
-      () => {
-        for (
-          const particle of
-            particles
-        ) {
-          const pulse =
-            reducedMotion
-              ? 1
-              : 0.74 +
-                Math.sin(
-                  time *
-                    particle.twinkle +
-                    particle.phase
-                ) *
-                  0.26;
+    const drawIcon = (
+      icon: string,
+      x: number,
+      y: number,
+      scale = 1
+    ) => {
+      ctx.save();
 
-          const alpha =
-            clamp(
-              particle.alpha *
-                pulse,
-              0.05,
-              1
-            );
+      ctx.translate(x, y);
+      ctx.scale(scale, scale);
 
-          ctx.beginPath();
+      ctx.strokeStyle = "rgba(235,245,255,0.95)";
+      ctx.fillStyle = "rgba(235,245,255,0.95)";
+      ctx.lineWidth = 1.25;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
 
-          ctx.arc(
-            particle.x,
-            particle.y,
-            particle.size,
-            0,
-            TAU
-          );
+      /* ---------------- WEB ---------------- */
 
-          ctx.fillStyle =
-            `rgba(153,190,255,${alpha})`;
+      if (icon === "web") {
+        ctx.beginPath();
+        ctx.moveTo(-7, -3);
+        ctx.lineTo(-2, 0);
+        ctx.lineTo(-7, 3);
 
-          ctx.fill();
+        ctx.moveTo(1, 3);
+        ctx.lineTo(7, 3);
 
-          if (
-            particle.size >
-            1.45
-          ) {
-            ctx.beginPath();
+        ctx.stroke();
+      }
 
-            ctx.arc(
-              particle.x,
-              particle.y,
-              particle.size *
-                2.4,
-              0,
-              TAU
-            );
+      /* ---------------- SEARCH ---------------- */
 
-            ctx.fillStyle =
-              `rgba(85,135,255,${
-                alpha *
-                0.06
-              })`;
-
-            ctx.fill();
-          }
-        }
-      };
-
-    /* ---------------------------------------------------------------------- */
-    /* Core                                                                    */
-    /* ---------------------------------------------------------------------- */
-
-    const drawCore = () => {
-      const coreRadius =
-        Math.min(
-          width,
-          height
-        ) * 0.18;
-
-      const glow =
-        ctx.createRadialGradient(
-          centerX,
-          centerY,
-          0,
-          centerX,
-          centerY,
-          coreRadius *
-            1.65
-        );
-
-      glow.addColorStop(
-        0,
-        "rgba(75,120,255,0.11)"
-      );
-
-      glow.addColorStop(
-        0.48,
-        "rgba(50,90,220,0.035)"
-      );
-
-      glow.addColorStop(
-        1,
-        "rgba(20,40,100,0)"
-      );
-
-      ctx.fillStyle =
-        glow;
-
-      ctx.beginPath();
-
-      ctx.arc(
-        centerX,
-        centerY,
-        coreRadius * 1.65,
-        0,
-        TAU
-      );
-
-      ctx.fill();
-
-      for (
-        const dot of coreDots
-      ) {
-        if (!reducedMotion) {
-          dot.angle +=
-            dot.speed;
-        }
-
-        const x =
-          centerX +
-          Math.cos(
-            dot.angle
-          ) *
-            dot.radius;
-
-        const y =
-          centerY +
-          Math.sin(
-            dot.angle
-          ) *
-            dot.radius *
-            0.72;
+      if (icon === "seo") {
+        ctx.beginPath();
+        ctx.arc(-2, -2, 5.5, 0, Math.PI * 2);
+        ctx.stroke();
 
         ctx.beginPath();
+        ctx.moveTo(2, 2);
+        ctx.lineTo(7, 7);
+        ctx.stroke();
+      }
 
-        ctx.arc(
-          x,
-          y,
-          dot.size,
-          0,
-          TAU
-        );
+      /* ---------------- MARKETING ---------------- */
 
-        ctx.fillStyle =
-          `rgba(151,191,255,${dot.alpha})`;
+      if (icon === "marketing") {
+        ctx.beginPath();
 
+        ctx.moveTo(-7, -3);
+        ctx.lineTo(0, -6);
+        ctx.lineTo(0, 6);
+        ctx.lineTo(-7, 3);
+        ctx.closePath();
+
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(-9, -2);
+        ctx.lineTo(-9, 2);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(3, -3);
+        ctx.quadraticCurveTo(7, 0, 3, 3);
+        ctx.stroke();
+      }
+
+      /* ---------------- AI ---------------- */
+
+      if (icon === "ai") {
+        for (let i = 0; i < 8; i++) {
+          const a = (Math.PI * 2 * i) / 8;
+
+          const x1 = Math.cos(a) * 3;
+          const y1 = Math.sin(a) * 3;
+
+          const x2 = Math.cos(a) * 8;
+          const y2 = Math.sin(a) * 8;
+
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+        }
+
+        ctx.beginPath();
+        ctx.arc(0, 0, 3, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      /* ---------------- MOBILE ---------------- */
+
+      if (icon === "mobile") {
+        ctx.beginPath();
+        ctx.roundRect(-4.5, -7.5, 9, 15, 1.5);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(0, 5, 0.7, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      ctx.beginPath();
+      /* ---------------- CART ---------------- */
 
-      ctx.arc(
-        centerX,
-        centerY,
-        2.2,
-        0,
-        TAU
-      );
+      if (icon === "commerce") {
+        ctx.beginPath();
 
-      ctx.fillStyle =
-        "rgba(215,230,255,0.98)";
+        ctx.moveTo(-8, -5);
+        ctx.lineTo(-5, -5);
+        ctx.lineTo(-2, 4);
+        ctx.lineTo(6, 4);
+        ctx.lineTo(8, -2);
+        ctx.lineTo(-4, -2);
 
-      ctx.shadowBlur = 16;
+        ctx.stroke();
 
-      ctx.shadowColor =
-        "rgba(95,145,255,0.95)";
+        ctx.beginPath();
+        ctx.arc(0, 7, 1.3, 0, Math.PI * 2);
+        ctx.arc(6, 7, 1.3, 0, Math.PI * 2);
+        ctx.fill();
+      }
 
-      ctx.fill();
+      /* ---------------- STRATEGY ---------------- */
 
-      ctx.shadowBlur = 0;
+      if (icon === "strategy") {
+        ctx.beginPath();
+        ctx.arc(0, 0, 7, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(0, 0, 3, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(0, -8);
+        ctx.lineTo(0, 8);
+
+        ctx.moveTo(-8, 0);
+        ctx.lineTo(8, 0);
+
+        ctx.stroke();
+      }
+
+      ctx.restore();
     };
 
-    /* ---------------------------------------------------------------------- */
-    /* Branches                                                                */
-    /* ---------------------------------------------------------------------- */
+    /* ========================================================
+       STATIC NETWORK
+    ======================================================== */
 
-    const drawBranch = (
-      target: Point,
-      nodeId: string,
-      index: number
+    const drawStaticNetwork = () => {
+      staticCtx.clearRect(0, 0, W, H);
+
+      /* Deep blue space lighting behind the right-weighted field. */
+      const spaceGlow = staticCtx.createRadialGradient(
+        W * 0.66,
+        H * 0.45,
+        0,
+        W * 0.66,
+        H * 0.45,
+        Math.min(W, H) * 0.72
+      );
+
+      spaceGlow.addColorStop(0, "rgba(12,45,130,0.22)");
+      spaceGlow.addColorStop(0.38, "rgba(6,24,80,0.12)");
+      spaceGlow.addColorStop(1, "rgba(0,4,18,0)");
+      staticCtx.fillStyle = spaceGlow;
+      staticCtx.fillRect(0, 0, W, H);
+
+      /*
+        Network connections
+      */
+
+      for (const edge of edges) {
+        const a = particles[edge.a];
+        const b = particles[edge.b];
+
+        const ax = a.x * W;
+        const ay = a.y * H;
+
+        const bx = b.x * W;
+        const by = b.y * H;
+
+        staticCtx.beginPath();
+        staticCtx.moveTo(ax, ay);
+        staticCtx.lineTo(bx, by);
+
+        staticCtx.strokeStyle = `rgba(75,145,255,${
+          edge.alpha * 1.35
+        })`;
+        staticCtx.lineWidth = 0.65;
+
+        staticCtx.stroke();
+      }
+
+      /*
+        Long atmospheric rays
+      */
+
+      const { x: cx, y: cy } = getCore();
+
+      const rayCount = 55;
+      const rayRng = seeded(4811);
+
+      for (let i = 0; i < rayCount; i++) {
+        const angle = rayRng() * Math.PI * 2;
+
+        const startRadius = 50 + rayRng() * 100;
+        const endRadius = 250 + rayRng() * 340;
+
+        const x1 = cx + Math.cos(angle) * startRadius;
+        const y1 = cy + Math.sin(angle) * startRadius;
+
+        const x2 = cx + Math.cos(angle) * endRadius;
+        const y2 = cy + Math.sin(angle) * endRadius;
+
+        staticCtx.beginPath();
+        staticCtx.moveTo(x1, y1);
+        staticCtx.lineTo(x2, y2);
+
+        staticCtx.strokeStyle = `rgba(40,100,255,${
+          0.025 + rayRng() * 0.055
+        })`;
+
+        staticCtx.lineWidth = 0.5;
+        staticCtx.stroke();
+      }
+
+      /*
+        Background particles
+      */
+
+      for (const p of particles) {
+        const x = p.x * W;
+        const y = p.y * H;
+
+        staticCtx.beginPath();
+        staticCtx.arc(x, y, p.r, 0, Math.PI * 2);
+
+        staticCtx.fillStyle = `rgba(150,205,255,${p.alpha})`;
+
+        staticCtx.fill();
+      }
+
+      /* Tiny distant stars keep the field feeling atmospheric. */
+      const starRng = seeded(9137);
+
+      for (let i = 0; i < 70; i++) {
+        const x = W * (0.34 + starRng() * 0.66);
+        const y = H * (0.05 + starRng() * 0.86);
+        const radius = 0.35 + starRng() * 0.8;
+        const alpha = 0.12 + starRng() * 0.24;
+
+        staticCtx.beginPath();
+        staticCtx.arc(x, y, radius, 0, Math.PI * 2);
+        staticCtx.fillStyle = `rgba(125,185,255,${alpha})`;
+        staticCtx.fill();
+      }
+    };
+
+    /* ========================================================
+       LIGHTNING
+    ======================================================== */
+
+    const drawLightning = (
+      x1: number,
+      y1: number,
+      x2: number,
+      y2: number,
+      alpha: number,
+      seed: number
     ) => {
-      const tx =
-        target.x * width;
+      const dx = x2 - x1;
+      const dy = y2 - y1;
 
-      const ty =
-        target.y * height;
+      const length = Math.hypot(dx, dy);
 
-      const dx =
-        tx - centerX;
+      if (length < 1) return;
 
-      const dy =
-        ty - centerY;
+      const nx = -dy / length;
+      const ny = dx / length;
 
-      const length =
-        Math.hypot(
-          dx,
-          dy
+      const random = seeded(seed + Math.floor(time / 18));
+
+      const points: [number, number][] = [[x1, y1]];
+
+      const segments = Math.max(16, Math.floor(length / 28));
+
+      for (let i = 1; i < segments; i++) {
+        const progress = i / segments;
+
+        /*
+          Less chaotic near the endpoints,
+          stronger branching around the middle.
+        */
+
+        const falloff =
+          Math.sin(progress * Math.PI) *
+          length *
+          0.055;
+
+        const jitter = (random() - 0.5) * falloff;
+
+        points.push([
+          x1 + dx * progress + nx * jitter,
+          y1 + dy * progress + ny * jitter,
+        ]);
+      }
+
+      points.push([x2, y2]);
+
+      /* Larger impact particles gather at the node contact point. */
+      const contactPoint = points[points.length - 1];
+      const contactBefore = points[points.length - 2];
+      const contactAngle = Math.atan2(
+        contactPoint[1] - contactBefore[1],
+        contactPoint[0] - contactBefore[0]
+      );
+
+      for (let i = 0; i < 3; i++) {
+        const contactProgress = 0.35 + i * 0.28;
+        const contactX =
+          contactBefore[0] +
+          (contactPoint[0] - contactBefore[0]) * contactProgress;
+        const contactY =
+          contactBefore[1] +
+          (contactPoint[1] - contactBefore[1]) * contactProgress;
+        const spread = (i - 1) * 3.5;
+        const particleX =
+          contactX + Math.cos(contactAngle + Math.PI / 2) * spread;
+        const particleY =
+          contactY + Math.sin(contactAngle + Math.PI / 2) * spread;
+        const particleSize = 1.8 + i * 0.45;
+        const particleGlow = ctx.createRadialGradient(
+          particleX,
+          particleY,
+          0,
+          particleX,
+          particleY,
+          particleSize * 8
         );
 
-      if (length < 20) {
-        return;
+        particleGlow.addColorStop(0, `rgba(245,252,255,${alpha})`);
+        particleGlow.addColorStop(
+          0.25,
+          `rgba(105,195,255,${alpha * 0.75})`
+        );
+        particleGlow.addColorStop(1, "rgba(0,55,255,0)");
+
+        ctx.fillStyle = particleGlow;
+        ctx.beginPath();
+        ctx.arc(particleX, particleY, particleSize * 8, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = `rgba(240,250,255,${alpha})`;
+        ctx.beginPath();
+        ctx.arc(particleX, particleY, particleSize, 0, Math.PI * 2);
+        ctx.fill();
       }
 
-      const nx =
-        -dy / length;
+      /* Small luminous particles sit on selected electric waypoints. */
+      for (let i = 1; i < points.length - 1; i++) {
+        if (random() > 0.55) continue;
 
-      const ny =
-        dx / length;
+        const [particleX, particleY] = points[i];
+        const particleSize = 0.6 + random() * 1.4;
+        const particleGlow = ctx.createRadialGradient(
+          particleX,
+          particleY,
+          0,
+          particleX,
+          particleY,
+          particleSize * 7
+        );
 
-      const segments =
-        mobile ? 7 : 11;
+        particleGlow.addColorStop(
+          0,
+          `rgba(220,245,255,${alpha * 0.9})`
+        );
+        particleGlow.addColorStop(
+          0.25,
+          `rgba(80,170,255,${alpha * 0.55})`
+        );
+        particleGlow.addColorStop(1, "rgba(0,60,255,0)");
 
-      const points: Point[] =
-        [
-          {
-            x: centerX,
-            y: centerY,
-          },
-        ];
+        ctx.fillStyle = particleGlow;
+        ctx.beginPath();
+        ctx.arc(
+          particleX,
+          particleY,
+          particleSize * 7,
+          0,
+          Math.PI * 2
+        );
+        ctx.fill();
 
-      const seed =
-        index * 91.37 +
-        17.2;
-
-      for (
-        let i = 1;
-        i < segments;
-        i++
-      ) {
-        const t =
-          i / segments;
-
-        const envelope =
-          Math.sin(
-            Math.PI * t
-          );
-
-        const wobble =
-          Math.sin(
-            seed +
-              i * 2.41
-          ) *
-          (mobile
-            ? 3.5
-            : 7.5) *
-          envelope;
-
-        points.push({
-          x:
-            centerX +
-            dx * t +
-            nx * wobble,
-
-          y:
-            centerY +
-            dy * t +
-            ny * wobble,
-        });
+        ctx.fillStyle = `rgba(225,245,255,${alpha})`;
+        ctx.beginPath();
+        ctx.arc(particleX, particleY, particleSize, 0, Math.PI * 2);
+        ctx.fill();
       }
 
-      points.push({
-        x: tx,
-        y: ty,
-      });
+      /*
+        Outer glow
+      */
 
-      const hovered =
-        hoveredRef.current ===
-        nodeId;
-
-      const baseAlpha =
-        hovered
-          ? 0.82
-          : 0.48;
-
-      /* Glow */
       ctx.save();
 
       ctx.beginPath();
+      ctx.moveTo(points[0][0], points[0][1]);
 
-      ctx.moveTo(
-        points[0].x,
-        points[0].y
-      );
-
-      for (
-        let i = 1;
-        i < points.length;
-        i++
-      ) {
-        ctx.lineTo(
-          points[i].x,
-          points[i].y
-        );
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i][0], points[i][1]);
       }
 
-      ctx.strokeStyle =
-        `rgba(55,110,255,${
-          baseAlpha * 0.18
-        })`;
-
-      ctx.lineWidth =
-        hovered ? 12 : 8;
-
-      ctx.shadowBlur =
-        hovered ? 18 : 12;
-
-      ctx.shadowColor =
-        "rgba(55,115,255,0.7)";
+      ctx.strokeStyle = `rgba(55,145,255,${alpha * 0.2})`;
+      ctx.lineWidth = 2.2;
+      ctx.shadowBlur = 16;
+      ctx.shadowColor = `rgba(65,155,255,${alpha})`;
 
       ctx.stroke();
 
       ctx.restore();
 
-      /* Bold branch */
+      /*
+        Main electric line
+      */
+
+      ctx.save();
+
       ctx.beginPath();
+      ctx.moveTo(points[0][0], points[0][1]);
 
-      ctx.moveTo(
-        points[0].x,
-        points[0].y
-      );
-
-      for (
-        let i = 1;
-        i < points.length;
-        i++
-      ) {
-        ctx.lineTo(
-          points[i].x,
-          points[i].y
-        );
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i][0], points[i][1]);
       }
 
-      ctx.strokeStyle =
-        `rgba(82,139,255,${baseAlpha})`;
+      ctx.strokeStyle = `rgba(125,195,255,${alpha * 0.78})`;
+      ctx.lineWidth = 0.55;
 
-      ctx.lineWidth =
-        hovered ? 3 : 2.1;
-
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = `rgba(110,195,255,${alpha})`;
 
       ctx.stroke();
 
-      /* Bright center */
+      ctx.restore();
+
+      /*
+        Bright inner filament
+      */
+
+      ctx.save();
+
       ctx.beginPath();
+      ctx.moveTo(points[0][0], points[0][1]);
 
-      ctx.moveTo(
-        points[0].x,
-        points[0].y
-      );
-
-      for (
-        let i = 1;
-        i < points.length;
-        i++
-      ) {
-        ctx.lineTo(
-          points[i].x,
-          points[i].y
-        );
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i][0], points[i][1]);
       }
 
-      ctx.strokeStyle =
-        `rgba(145,184,255,${
-          hovered
-            ? 0.82
-            : 0.58
-        })`;
-
-      ctx.lineWidth =
-        hovered ? 1.2 : 0.9;
+      ctx.strokeStyle = `rgba(235,248,255,${alpha * 0.9})`;
+      ctx.lineWidth = 0.22;
 
       ctx.stroke();
 
-      /* Moving energy */
-      if (!reducedMotion) {
+      ctx.restore();
+
+      /* Traveling sparks make each connection feel electrically alive. */
+      const sparkRandom = seeded(seed + 771);
+
+      for (let i = 0; i < 2; i++) {
         const progress =
-          (
-            time *
-              (0.00022 +
-                index *
-                  0.000012) +
-            index * 0.137
-          ) % 1;
+          (time * (0.006 + sparkRandom() * 0.004) +
+            seed * 0.001 +
+            i * 0.47) %
+          1;
 
-        const segmentFloat =
-          progress *
-          (points.length - 1);
-
-        const segmentIndex =
-          Math.min(
-            Math.floor(
-              segmentFloat
-            ),
-            points.length - 2
-          );
-
-        const localT =
-          segmentFloat -
-          segmentIndex;
-
-        const a =
-          points[
-            segmentIndex
-          ];
-
-        const b =
-          points[
-            segmentIndex + 1
-          ];
-
-        const px =
-          a.x +
-          (b.x - a.x) *
-            localT;
-
-        const py =
-          a.y +
-          (b.y - a.y) *
-            localT;
-
-        ctx.beginPath();
-
-        ctx.arc(
-          px,
-          py,
-          hovered ? 1.8 : 1.4,
+        const segment = Math.min(
+          points.length - 2,
+          Math.floor(progress * (points.length - 1))
+        );
+        const localProgress =
+          progress * (points.length - 1) - segment;
+        const start = points[segment];
+        const end = points[segment + 1];
+        const sparkX =
+          start[0] + (end[0] - start[0]) * localProgress;
+        const sparkY =
+          start[1] + (end[1] - start[1]) * localProgress;
+        const sparkRadius = 1.5 + alpha * 1.5;
+        const sparkGlow = ctx.createRadialGradient(
+          sparkX,
+          sparkY,
           0,
-          TAU
+          sparkX,
+          sparkY,
+          sparkRadius * 8
         );
 
-        ctx.fillStyle =
-          "rgba(215,232,255,1)";
+        sparkGlow.addColorStop(0, `rgba(220,245,255,${alpha})`);
+        sparkGlow.addColorStop(0.25, `rgba(80,165,255,${alpha * 0.6})`);
+        sparkGlow.addColorStop(1, "rgba(0,60,255,0)");
 
-        ctx.shadowBlur =
-          hovered ? 15 : 9;
-
-        ctx.shadowColor =
-          "rgba(80,145,255,1)";
-
+        ctx.fillStyle = sparkGlow;
+        ctx.beginPath();
+        ctx.arc(sparkX, sparkY, sparkRadius * 8, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.shadowBlur = 0;
+        ctx.fillStyle = `rgba(235,250,255,${alpha})`;
+        ctx.beginPath();
+        ctx.arc(sparkX, sparkY, sparkRadius, 0, Math.PI * 2);
+        ctx.fill();
       }
 
-      /* Endpoint */
-      ctx.beginPath();
+      /* Occasional side branches create short electrical discharges. */
+      if (length > 180) {
+        const branchRandom = seeded(seed + Math.floor(time / 28));
 
-      ctx.arc(
-        tx,
-        ty,
-        hovered ? 4.5 : 3.4,
-        0,
-        TAU
-      );
+        for (let branch = 0; branch < 2; branch++) {
+          if (branchRandom() < 0.5) continue;
 
-      ctx.fillStyle =
-        hovered
-          ? "rgba(205,228,255,1)"
-          : "rgba(145,190,255,0.95)";
+          const index =
+            4 + Math.floor(branchRandom() * (points.length - 8));
+          const [branchX, branchY] = points[index];
+          const branchAngle =
+            Math.atan2(dy, dx) + (branchRandom() - 0.5) * 1.8;
+          const branchLength = 25 + branchRandom() * 75;
+          const endX =
+            branchX + Math.cos(branchAngle) * branchLength;
+          const endY =
+            branchY + Math.sin(branchAngle) * branchLength;
 
-      ctx.shadowBlur =
-        hovered ? 16 : 9;
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(branchX, branchY);
 
-      ctx.shadowColor =
-        "rgba(75,135,255,0.9)";
+          for (let segment = 1; segment <= 5; segment++) {
+            const progress = segment / 5;
+            const jitter = (branchRandom() - 0.5) * 14;
 
-      ctx.fill();
+            ctx.lineTo(
+              branchX +
+                (endX - branchX) * progress +
+                Math.cos(branchAngle + Math.PI / 2) * jitter,
+              branchY +
+                (endY - branchY) * progress +
+                Math.sin(branchAngle + Math.PI / 2) * jitter
+            );
+          }
 
-      ctx.shadowBlur = 0;
+          ctx.strokeStyle = `rgba(100,180,255,${alpha * 0.35})`;
+          ctx.lineWidth = 0.65;
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = "rgba(70,150,255,0.8)";
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
     };
 
-    const drawBranches =
-      () => {
-        for (
-          let i = 0;
-          i < nodes.length;
-          i++
-        ) {
-          const node =
-            nodes[i];
+    /* ========================================================
+       NODE
+    ======================================================== */
 
-          drawBranch(
-            getAnchor(node),
-            node.id,
-            i
-          );
-        }
-      };
-
-    /* ---------------------------------------------------------------------- */
-    /* Render                                                                 */
-    /* ---------------------------------------------------------------------- */
-
-    const render = (
-      timestamp: number
+    const drawNode = (
+      x: number,
+      y: number,
+      key: string,
+      pulse: number,
+      label: readonly string[],
+      labelSide: "left" | "right",
+      active = false
     ) => {
-      if (destroyed) {
-        return;
-      }
+      const R = W >= 900 ? 38 : 28;
+      const intensity = active ? 1 : pulse;
 
-      raf =
-        requestAnimationFrame(
-          render
+      /* Transparent eclipse node: glow and rings only, no interior fill. */
+      ctx.save();
+
+      const nodeGlow = ctx.createRadialGradient(
+        x,
+        y,
+        R * 0.72,
+        x,
+        y,
+        R * 1.7
+      );
+
+      nodeGlow.addColorStop(0, "rgba(40,130,255,0)");
+      nodeGlow.addColorStop(
+        0.72,
+        `rgba(55,145,255,${0.08 + intensity * 0.08})`
+      );
+      nodeGlow.addColorStop(1, "rgba(0,60,255,0)");
+
+      ctx.fillStyle = nodeGlow;
+      ctx.beginPath();
+      ctx.arc(x, y, R * 1.7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      ctx.save();
+
+      ctx.beginPath();
+      ctx.arc(x, y, R, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(145,215,255,${
+        0.62 + intensity * 0.3
+      })`;
+      ctx.lineWidth = 1.1;
+      ctx.shadowBlur = 16;
+      ctx.shadowColor = `rgba(65,155,255,${
+        0.75 + intensity * 0.2
+      })`;
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x, y, R - 4, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(100,190,255,${
+        0.28 + intensity * 0.15
+      })`;
+      ctx.lineWidth = 0.65;
+      ctx.stroke();
+      ctx.restore();
+
+      /* Electric contact point where the bolt meets the circle. */
+      const core = getCore();
+      const dx = x - core.x;
+      const dy = y - core.y;
+      const distance = Math.hypot(dx, dy);
+
+      if (distance > 0) {
+        const contactX = x - (dx / distance) * (R - 1);
+        const contactY = y - (dy / distance) * (R - 1);
+        const contactGlow = ctx.createRadialGradient(
+          contactX,
+          contactY,
+          0,
+          contactX,
+          contactY,
+          15
         );
 
-      if (!visible) {
-        return;
+        contactGlow.addColorStop(
+          0,
+          `rgba(235,250,255,${active ? 1 : 0.9 + pulse * 0.1})`
+        );
+        contactGlow.addColorStop(
+          0.2,
+          `rgba(100,190,255,${0.7 + pulse * 0.2})`
+        );
+        contactGlow.addColorStop(0.55, "rgba(40,120,255,0.25)");
+        contactGlow.addColorStop(1, "rgba(0,50,255,0)");
+
+        ctx.fillStyle = contactGlow;
+        ctx.beginPath();
+        ctx.arc(contactX, contactY, 18, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "rgba(240,250,255,0.98)";
+        ctx.beginPath();
+        ctx.arc(contactX, contactY, 2.2 + intensity, 0, Math.PI * 2);
+        ctx.fill();
       }
 
       /*
-       * FPS limiter.
-       */
-      if (
-        timestamp -
-          lastFrame <
-        frameInterval
-      ) {
+        Icon
+      */
+
+      drawIcon(key, x, y, 1.05);
+
+      /*
+        Label outside the circle
+      */
+
+      const labelX =
+        labelSide === "right"
+          ? x + R + 20
+          : x - R - 20;
+
+      ctx.save();
+
+      ctx.font =
+        "500 10px Inter, Arial, sans-serif";
+
+      ctx.fillStyle = active
+        ? "rgba(190,230,255,1)"
+        : "rgba(245,248,255,0.88)";
+
+      ctx.textAlign =
+        labelSide === "right"
+          ? "left"
+          : "right";
+
+      ctx.textBaseline = "middle";
+
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = "rgba(100,170,255,0.2)";
+
+      label.forEach((line, index) => {
+        const offset =
+          (index - (label.length - 1) / 2) * 14;
+
+        ctx.fillText(
+          line,
+          labelX,
+          y + offset
+        );
+      });
+
+      ctx.restore();
+    };
+
+    /* A few background links carry slower moving light particles. */
+    const drawBackgroundSparks = () => {
+      const sparkCount = Math.min(34, edges.length);
+
+      for (let index = 0; index < sparkCount; index++) {
+        const edge = edges[index * 3];
+
+        if (!edge) continue;
+
+        const a = particles[edge.a];
+        const b = particles[edge.b];
+        const progress =
+          (time * 0.0025 + index * 0.19) % 1;
+        const x =
+          a.x * W + (b.x - a.x) * W * progress;
+        const y =
+          a.y * H + (b.y - a.y) * H * progress;
+        const radius = 0.7 + (index % 3) * 0.25;
+        const glow = ctx.createRadialGradient(
+          x,
+          y,
+          0,
+          x,
+          y,
+          radius * 7
+        );
+
+        glow.addColorStop(0, "rgba(190,230,255,0.8)");
+        glow.addColorStop(0.3, "rgba(55,140,255,0.35)");
+        glow.addColorStop(1, "rgba(0,50,255,0)");
+
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(x, y, radius * 7, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "rgba(215,242,255,0.85)";
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    };
+
+    /* ========================================================
+       CORE
+    ======================================================== */
+
+    const drawCore = (cx: number, cy: number) => {
+      const pulse =
+        1 + Math.sin(time * 0.035) * 0.06;
+
+      const R =
+        Math.min(W, H) *
+        (W >= 900 ? 0.052 : 0.065) *
+        pulse;
+
+      /*
+        Massive atmospheric bloom
+      */
+
+      const bloom = ctx.createRadialGradient(
+        cx,
+        cy,
+        0,
+        cx,
+        cy,
+        R * 7
+      );
+
+      bloom.addColorStop(
+        0,
+        "rgba(100,180,255,0.17)"
+      );
+
+      bloom.addColorStop(
+        0.2,
+        "rgba(70,140,255,0.10)"
+      );
+
+      bloom.addColorStop(
+        0.48,
+        "rgba(40,100,255,0.045)"
+      );
+
+      bloom.addColorStop(
+        1,
+        "rgba(0,30,150,0)"
+      );
+
+      ctx.fillStyle = bloom;
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, R * 7, 0, Math.PI * 2);
+      ctx.fill();
+
+      /* Eclipse silhouette with a narrow electric corona. */
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, R * 1.22, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(95,175,255,0.72)";
+      ctx.lineWidth = Math.max(1, R * 0.035);
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = "rgba(45,130,255,0.85)";
+      ctx.stroke();
+      ctx.fillStyle = "rgba(1,5,18,0.94)";
+      ctx.fill();
+      ctx.restore();
+
+      /*
+        Concentric energy rings
+      */
+
+      for (let i = 1; i <= 6; i++) {
+        const ringRadius =
+          R * (1.15 + i * 0.42);
+
+        ctx.save();
+
+        ctx.beginPath();
+        ctx.arc(
+          cx,
+          cy,
+          ringRadius,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.strokeStyle = `rgba(105,175,255,${
+          0.18 - i * 0.018
+        })`;
+
+        ctx.lineWidth =
+          i === 1 ? 1.2 : 0.6;
+
+        ctx.shadowBlur =
+          i <= 2 ? 8 : 3;
+
+        ctx.shadowColor =
+          "rgba(80,160,255,0.55)";
+
+        ctx.stroke();
+
+        ctx.restore();
+      }
+
+      /*
+        Main white/blue core
+      */
+
+      const core = ctx.createRadialGradient(
+        cx,
+        cy,
+        0,
+        cx,
+        cy,
+        R * 1.7
+      );
+
+      core.addColorStop(0, "rgba(40,95,190,0.16)");
+
+      core.addColorStop(0.07, "rgba(85,160,255,0.28)");
+
+      core.addColorStop(
+        0.16,
+        "rgba(170,220,255,0.95)"
+      );
+
+      core.addColorStop(
+        0.34,
+        "rgba(85,155,255,0.55)"
+      );
+
+      core.addColorStop(
+        0.65,
+        "rgba(40,90,255,0.15)"
+      );
+
+      core.addColorStop(
+        1,
+        "rgba(0,40,220,0)"
+      );
+
+      ctx.save();
+
+      ctx.fillStyle = core;
+
+      ctx.shadowBlur = 35;
+      ctx.shadowColor =
+        "rgba(100,180,255,0.9)";
+
+      ctx.beginPath();
+      ctx.arc(
+        cx,
+        cy,
+        R * 1.7,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fill();
+
+      ctx.restore();
+
+      /*
+        Bright center point
+      */
+
+      ctx.save();
+
+      ctx.fillStyle = "rgba(0,4,16,0.96)";
+
+      ctx.shadowBlur = 16;
+      ctx.shadowColor = "rgba(90,170,255,0.9)";
+
+      ctx.beginPath();
+      ctx.arc(
+        cx,
+        cy,
+        4.5 * pulse,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fill();
+
+      ctx.restore();
+    };
+
+    /* ========================================================
+       ANIMATION FRAME
+    ======================================================== */
+
+    const animate = () => {
+      if (!isVisible) {
+        raf = requestAnimationFrame(animate);
         return;
       }
 
-      lastFrame = timestamp;
-      time = timestamp;
+      time += reducedMotion.matches ? 0.25 : 1;
 
-      ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-      );
+      ctx.clearRect(0, 0, W, H);
 
-      updateParticles();
+      const { x: cx, y: cy } = getCore();
 
-      drawConnections();
+      /*
+        Animate subtle particle glow only.
+        The expensive network itself is static.
+      */
 
-      drawBranches();
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
 
-      drawParticles();
+        const x =
+          p.x * W +
+          Math.sin(
+            time * p.speed + p.phase
+          ) *
+            1.3;
 
-      drawCore();
+        const y =
+          p.y * H +
+          Math.cos(
+            time * p.speed * 0.8 + p.phase
+          ) *
+            1.3;
+
+        const pulse =
+          0.65 +
+          Math.sin(
+            time * p.speed * 3 +
+              p.phase
+          ) *
+            0.35;
+
+        /*
+          Only glow brighter particles.
+        */
+
+        if (p.alpha > 0.28) {
+          ctx.beginPath();
+
+          ctx.arc(
+            x,
+            y,
+            p.r * (1 + pulse * 0.35),
+            0,
+            Math.PI * 2
+          );
+
+          ctx.fillStyle = `rgba(205,235,255,${
+            p.alpha * pulse
+          })`;
+
+          ctx.fill();
+        }
+      }
+
+      drawBackgroundSparks();
+
+      /*
+        Core → service lightning
+      */
+
+      NODES.forEach((node, index) => {
+        const { x, y } = getNodePosition(node);
+        const NODE_RADIUS = W >= 900 ? 38 : 28;
+        const dx = x - cx;
+        const dy = y - cy;
+        const distance = Math.hypot(dx, dy);
+        const endX = x - (dx / distance) * NODE_RADIUS;
+        const endY = y - (dy / distance) * NODE_RADIUS;
+
+        const pulse =
+          0.5 +
+          Math.sin(
+            time * 0.018 + index * 0.9
+          ) *
+            0.5;
+
+        drawLightning(
+          cx,
+          cy,
+          endX,
+          endY,
+          0.65 + pulse * 0.3,
+          index * 731 + 42
+        );
+
+        drawNode(
+          x,
+          y,
+          node.key,
+          pulse,
+          node.label,
+          node.labelSide,
+          touchedNode === node.key
+        );
+      });
+
+      /*
+        Central core on top of everything
+      */
+
+      drawCore(cx, cy);
+
+      raf = requestAnimationFrame(animate);
     };
 
-    /* ---------------------------------------------------------------------- */
-    /* Pointer                                                                 */
-    /* ---------------------------------------------------------------------- */
+    /* ========================================================
+       MOUSE
+    ======================================================== */
 
-    const handlePointerMove =
-      (event: PointerEvent) => {
-        const rect =
-          canvas.getBoundingClientRect();
+    const section = animationCanvas.parentElement;
 
-        mouseRef.current.x =
-          (event.clientX -
-            rect.left) /
-          Math.max(
-            rect.width,
-            1
-          );
+    const getTouchedNode = (event: TouchEvent) => {
+      const touch = event.touches[0] ?? event.changedTouches[0];
 
-        mouseRef.current.y =
-          (event.clientY -
-            rect.top) /
-          Math.max(
-            rect.height,
-            1
-          );
+      if (!touch) return null;
 
-        mouseRef.current.active =
-          true;
-      };
+      const rect = section?.getBoundingClientRect();
 
-    const handlePointerLeave =
-      () => {
-        mouseRef.current.active =
-          false;
-      };
+      if (!rect) return null;
 
-    /* ---------------------------------------------------------------------- */
-    /* Visibility                                                              */
-    /* ---------------------------------------------------------------------- */
+      const touchX = touch.clientX - rect.left;
+      const touchY = touch.clientY - rect.top;
+      const hitRadius = 42;
+
+      for (const node of NODES) {
+        const position = getNodePosition(node);
+        const distance = Math.hypot(
+          touchX - position.x,
+          touchY - position.y
+        );
+
+        if (distance <= hitRadius) return node.key;
+      }
+
+      return null;
+    };
+
+    const onTouchStart = (event: TouchEvent) => {
+      touchedNode = getTouchedNode(event);
+    };
+
+    const onTouchMove = (event: TouchEvent) => {
+      touchedNode = getTouchedNode(event);
+    };
+
+    const onTouchEnd = () => {
+      touchedNode = null;
+    };
+
+    section?.addEventListener("touchstart", onTouchStart, {
+      passive: true,
+    });
+    section?.addEventListener("touchmove", onTouchMove, {
+      passive: true,
+    });
+    section?.addEventListener("touchend", onTouchEnd, {
+      passive: true,
+    });
+    section?.addEventListener("touchcancel", onTouchEnd, {
+      passive: true,
+    });
+
+    /* ========================================================
+       VISIBILITY
+       Stops animation when hero isn't visible.
+    ======================================================== */
 
     const observer =
       new IntersectionObserver(
         ([entry]) => {
-          visible =
-            entry.isIntersecting;
+          isVisible = entry.isIntersecting;
+
+          if (isVisible && !raf) {
+            raf = requestAnimationFrame(
+              animate
+            );
+          }
         },
         {
           threshold: 0.01,
         }
       );
 
-    observer.observe(canvas);
+    observer.observe(animationCanvas);
 
-    canvas.addEventListener(
-      "pointermove",
-      handlePointerMove,
-      {
-        passive: true,
-      }
-    );
+    /* ========================================================
+       INITIALIZE
+    ======================================================== */
 
-    canvas.addEventListener(
-      "pointerleave",
-      handlePointerLeave,
-      {
-        passive: true,
-      }
-    );
+    resize();
 
     window.addEventListener(
       "resize",
       resize,
-      {
-        passive: true,
-      }
+      { passive: true }
     );
 
-    resize();
+    raf = requestAnimationFrame(animate);
 
-    raf =
-      requestAnimationFrame(
-        render
-      );
+    /* ========================================================
+       CLEANUP
+    ======================================================== */
 
     return () => {
-      destroyed = true;
-
-      cancelAnimationFrame(
-        raf
-      );
-
-      observer.disconnect();
-
-      canvas.removeEventListener(
-        "pointermove",
-        handlePointerMove
-      );
-
-      canvas.removeEventListener(
-        "pointerleave",
-        handlePointerLeave
-      );
+      cancelAnimationFrame(raf);
 
       window.removeEventListener(
         "resize",
         resize
       );
-    };
-  }, [nodes]);
 
-  void mouseX;
-  void mouseY;
+      section?.removeEventListener("touchstart", onTouchStart);
+      section?.removeEventListener("touchmove", onTouchMove);
+      section?.removeEventListener("touchend", onTouchEnd);
+      section?.removeEventListener("touchcancel", onTouchEnd);
+
+      observer.disconnect();
+    };
+  }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 h-full w-full"
-    />
+    <>
+      {/* Static expensive network layer */}
+      <canvas
+        ref={staticCanvasRef}
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          inset-x-0
+          top-0
+          z-[1]
+          h-full
+          min-h-screen
+          w-full
+          lg:-left-[7.5%]
+          lg:h-[115vh]
+          lg:min-h-[900px]
+          lg:w-[115%]
+        "
+      />
+
+      {/* Small animated layer */}
+      <canvas
+        ref={animationCanvasRef}
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          inset-x-0
+          top-0
+          z-[1]
+          h-full
+          min-h-screen
+          w-full
+          lg:-left-[7.5%]
+          lg:h-[115vh]
+          lg:min-h-[900px]
+          lg:w-[115%]
+        "
+      />
+    </>
   );
 }
