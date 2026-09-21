@@ -78,7 +78,7 @@ export default function InsightsPage() {
           >
             <span className="h-px w-10 bg-[#e21d2b]" />
 
-            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/40">
+            <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/40">
               04 / Insights
             </span>
           </motion.div>
@@ -91,7 +91,7 @@ export default function InsightsPage() {
                 duration: 1,
                 ease: [0.76, 0, 0.24, 1],
               }}
-              className="max-w-7xl text-[clamp(4.5rem,11vw,11rem)] font-semibold uppercase leading-[0.74] tracking-[-0.08em]"
+              className="max-w-3xl text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.74] tracking-[-0.08em]"
             >
               Ideas
               <br />
@@ -119,7 +119,7 @@ export default function InsightsPage() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="hidden items-center gap-3 text-[9px] uppercase tracking-[0.3em] text-white/30 sm:flex"
+              className="hidden items-center gap-3 text-[14px] uppercase tracking-[0.3em] text-white/30 sm:flex"
             >
               Explore
               <ArrowDown size={14} strokeWidth={1.4} />
@@ -135,7 +135,7 @@ export default function InsightsPage() {
             <div className="flex items-start gap-3">
               <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
                 From Atria
               </span>
             </div>
@@ -145,7 +145,7 @@ export default function InsightsPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="max-w-5xl text-[clamp(2rem,4vw,4.5rem)] font-medium leading-[1.02] tracking-[-0.045em] text-black/80"
+              className="max-w-3xl text-[clamp(2.5rem,5vw,5.5rem)] font-medium leading-[1.02] tracking-[-0.045em] text-black/80"
             >
               Useful thinking for businesses trying to make better decisions
               in an increasingly digital world.
@@ -161,12 +161,12 @@ export default function InsightsPage() {
             <div className="flex items-center gap-3">
               <span className="h-px w-10 bg-[#e21d2b]" />
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
                 Featured insight
               </span>
             </div>
 
-            <span className="text-[9px] uppercase tracking-[0.25em] text-black/30">
+            <span className="text-[14px] uppercase tracking-[0.25em] text-black/30">
               {featuredInsight.readTime}
             </span>
           </div>
@@ -188,7 +188,7 @@ export default function InsightsPage() {
 
                   <div className="absolute h-52 w-52 rounded-full border border-black/10 sm:h-72 sm:w-72" />
 
-                  <span className="relative text-[clamp(3rem,8vw,8rem)] font-semibold uppercase leading-none tracking-[-0.08em] text-black/[0.07]">
+                  <span className="relative text-[clamp(3rem,vw,5.5rem)] font-semibold uppercase leading-none tracking-[-0.08em] text-black/[0.07]">
                     Insight
                   </span>
                 </div>
@@ -205,7 +205,7 @@ export default function InsightsPage() {
               {/* Content */}
               <div className="flex flex-col justify-between p-7 sm:p-10 lg:p-14">
                 <div>
-                  <span className="text-[9px] font-semibold uppercase tracking-[0.25em] text-[#e21d2b]">
+                  <span className="text-[14px] font-semibold uppercase tracking-[0.25em] text-[#e21d2b]">
                     {featuredInsight.category}
                   </span>
 
@@ -219,11 +219,11 @@ export default function InsightsPage() {
                 </div>
 
                 <div className="mt-14 flex items-center justify-between border-t border-black/15 pt-5">
-                  <span className="text-[9px] font-semibold uppercase tracking-[0.25em]">
+                  <span className="text-[14px] font-semibold uppercase tracking-[0.25em]">
                     Read insight
                   </span>
 
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-black/30">
+                  <span className="text-[14px] uppercase tracking-[0.2em] text-black/30">
                     {featuredInsight.readTime}
                   </span>
                 </div>
@@ -240,13 +240,13 @@ export default function InsightsPage() {
             <div className="flex items-start gap-3">
               <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/35">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/35">
                 Latest insights
               </span>
             </div>
 
             <div>
-              <h2 className="text-[clamp(4rem,8vw,8.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]">
+              <h2 className="text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]">
                 Worth
                 <br />
                 a

@@ -49,7 +49,7 @@ export default function WebDevelopmentSubPage({
           >
             <span className="h-px w-10 bg-[#e21d2b]" />
 
-            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/40">
+            <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/40">
               Web Development / {service.number}
             </span>
           </motion.div>
@@ -62,7 +62,7 @@ export default function WebDevelopmentSubPage({
               delay: 0.1,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className="max-w-[1450px] text-[clamp(4.5rem,11vw,12rem)] font-semibold uppercase leading-[0.73] tracking-[-0.085em]"
+            className="max-w-[1450px] text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.73] tracking-[-0.085em]"
           >
             {service.title}
             <span className="text-[#e21d2b]">.</span>
@@ -83,7 +83,7 @@ export default function WebDevelopmentSubPage({
             </motion.p>
 
             <div className="flex items-center gap-4 lg:justify-end">
-              <span className="text-[9px] uppercase tracking-[0.3em] text-white/30">
+              <span className="text-[14px] uppercase tracking-[0.3em] text-white/30">
                 Scroll to explore
               </span>
 
@@ -108,7 +108,7 @@ export default function WebDevelopmentSubPage({
           <div className="flex items-start gap-3">
             <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+            <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
               The service
             </span>
           </div>
@@ -122,7 +122,7 @@ export default function WebDevelopmentSubPage({
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="max-w-6xl text-[clamp(3rem,6vw,7rem)] font-semibold uppercase leading-[0.8] tracking-[-0.075em]">
+            <h2 className="max-w-6xl text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.8] tracking-[-0.075em]">
               {service.heroDescription}
             </h2>
 
@@ -145,14 +145,14 @@ export default function WebDevelopmentSubPage({
             <div className="flex items-start gap-3">
               <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/40">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/40">
                 What we solve
               </span>
             </div>
 
             <div>
 
-              <h2 className="text-[clamp(3.5rem,7vw,8rem)] font-semibold uppercase leading-[0.76] tracking-[-0.08em]">
+              <h2 className="text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.76] tracking-[-0.08em]">
                 Built around
                 <br />
                 your challenges
@@ -209,14 +209,14 @@ export default function WebDevelopmentSubPage({
             <div className="flex items-start gap-3">
               <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
                 Capabilities
               </span>
             </div>
 
             <div>
 
-              <h2 className="text-[clamp(3.5rem,7vw,8rem)] font-semibold uppercase leading-[0.76] tracking-[-0.08em]">
+              <h2 className="text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.76] tracking-[-0.08em]">
                 What we
                 <br />
                 build
@@ -283,14 +283,14 @@ export default function WebDevelopmentSubPage({
             <div className="flex items-start gap-3">
               <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
                 Technology
               </span>
             </div>
 
             <div>
 
-              <h2 className="text-[clamp(3.5rem,7vw,8rem)] font-semibold uppercase leading-[0.76] tracking-[-0.08em]">
+              <h2 className="text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.76] tracking-[-0.08em]">
                 Built with
                 <br />
                 modern tools
@@ -350,14 +350,14 @@ export default function WebDevelopmentSubPage({
             <div className="flex items-start gap-3">
               <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
                 Our process
               </span>
             </div>
 
             <div>
 
-              <h2 className="text-[clamp(3.5rem,7vw,8rem)] font-semibold uppercase leading-[0.76] tracking-[-0.08em]">
+              <h2 className="text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.76] tracking-[-0.08em]">
                 From idea
                 <br />
                 to execution
@@ -389,7 +389,7 @@ export default function WebDevelopmentSubPage({
 
                     <div className="flex items-center justify-between">
 
-                      <span className="text-[10px] font-semibold tracking-[0.25em] text-black/30">
+                      <span className="text-[14px] font-semibold tracking-[0.25em] text-black/30">
                         {String(index + 1).padStart(2, "0")}
                       </span>
 
@@ -429,11 +429,11 @@ export default function WebDevelopmentSubPage({
 
             <div>
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/35">
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/35">
                 Start a project
               </span>
 
-              <h2 className="mt-8 max-w-5xl text-[clamp(4rem,9vw,10rem)] font-semibold uppercase leading-[0.74] tracking-[-0.08em]">
+              <h2 className="mt-8 max-w-5xl text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.74] tracking-[-0.08em]">
                 Ready to
                 <br />
                 build
@@ -444,7 +444,7 @@ export default function WebDevelopmentSubPage({
 
             <Link
               href="/contact"
-              className="group flex w-fit items-center gap-4 rounded-full border border-white/20 px-7 py-4 text-xs font-semibold uppercase tracking-[0.18em] transition-all duration-300 hover:border-[#e21d2b] hover:bg-[#e21d2b]"
+              className="group flex w-fit items-center gap-4 rounded-full border border-white/20 px-7 py-4 text-[14px] font-semibold uppercase tracking-[0.18em] transition-all duration-300 hover:border-[#e21d2b] hover:bg-[#e21d2b]"
             >
               Let's talk
 

@@ -56,13 +56,13 @@ export default function ContactPage() {
               <div className="flex items-center gap-3">
                 <span className="h-px w-10 bg-[#e21d2b]" />
 
-                <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/45">
+                <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/45">
                   Your project
                 </span>
               </div>
 
               {/* Heading */}
-              <h1 className="mt-10 text-[clamp(4rem,7vw,7.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.075em] text-[#090909]">
+              <h1 className="mt-10 text-[clamp(2rem,5vw,5.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.075em] text-[#090909]">
                 Tell us
                 <br />
                 more<span className="text-[#e21d2b]">.</span>
@@ -86,7 +86,7 @@ export default function ContactPage() {
                   </div>
 
                   <div>
-                    <span className="block text-[9px] font-semibold uppercase tracking-[0.25em] text-black/40">
+                    <span className="block text-[14px] font-semibold uppercase tracking-[0.25em] text-black/40">
                       Email
                     </span>
 
@@ -106,7 +106,7 @@ export default function ContactPage() {
                   </div>
 
                   <div>
-                    <span className="block text-[9px] font-semibold uppercase tracking-[0.25em] text-black/40">
+                    <span className="block text-[14px] font-semibold uppercase tracking-[0.25em] text-black/40">
                       Location
                     </span>
 
@@ -168,7 +168,7 @@ export default function ContactPage() {
 
                     {/* SERVICES */}
                     <fieldset className="mt-8">
-                      <legend className="text-[9px] font-semibold uppercase tracking-[0.25em] text-black/55">
+                      <legend className="text-[14px] font-semibold uppercase tracking-[0.25em] text-black/55">
                         What can we help with?
                         <span className="ml-1 text-[#e21d2b]">*</span>
                       </legend>
@@ -236,7 +236,7 @@ export default function ContactPage() {
                     <div className="mt-8">
                       <label
                         htmlFor="message"
-                        className="block text-[9px] font-semibold uppercase tracking-[0.25em] text-black/55"
+                        className="block text-[14px] font-semibold uppercase tracking-[0.25em] text-black/55"
                       >
                         Tell us about your project
                         <span className="ml-1 text-[#e21d2b]">*</span>
@@ -343,7 +343,7 @@ function InputField({
 }) {
   return (
     <label className="block">
-      <span className="text-[9px] font-semibold uppercase tracking-[0.25em] text-black/55">
+      <span className="text-[14px] font-semibold uppercase tracking-[0.25em] text-black/55">
         {label}
 
         {required && <span className="ml-1 text-[#e21d2b]">*</span>}
@@ -375,7 +375,7 @@ function SuccessState({ onReset }: { onReset: () => void }) {
         <Check size={27} strokeWidth={1.5} />
       </div>
 
-      <h2 className="mt-8 text-[clamp(3rem,6vw,6rem)] font-semibold uppercase leading-[0.8] tracking-[-0.07em]">
+      <h2 className="mt-8 text-[clamp(2rem,5vw,5.5rem)] font-semibold uppercase leading-[0.8] tracking-[-0.07em]">
         Thanks<span className="text-[#e21d2b]">.</span>
       </h2>
 
@@ -386,7 +386,7 @@ function SuccessState({ onReset }: { onReset: () => void }) {
 
       <button
         onClick={onReset}
-        className="mt-8 text-[9px] font-semibold uppercase tracking-[0.25em] text-black/45 transition-colors hover:text-[#e21d2b]"
+        className="mt-8 text-[14px] font-semibold uppercase tracking-[0.25em] text-black/45 transition-colors hover:text-[#e21d2b]"
       >
         Send another enquiry
       </button>

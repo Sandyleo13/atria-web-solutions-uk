@@ -41,7 +41,7 @@ export default function TeamPage() {
           >
             <span className="h-px w-10 bg-[#e21d2b]" />
 
-            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/45">
+            <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/45">
               06 / Team
             </span>
           </motion.div>
@@ -55,7 +55,7 @@ export default function TeamPage() {
                 duration: 1,
                 ease: [0.76, 0, 0.24, 1],
               }}
-              className="max-w-[1500px] text-[clamp(5rem,11vw,12rem)] font-semibold uppercase leading-[0.73] tracking-[-0.085em]"
+              className="max-w-[1500px] text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.73] tracking-[-0.085em]"
             >
               The people
               <br />
@@ -86,7 +86,7 @@ export default function TeamPage() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="hidden shrink-0 items-center gap-3 text-[9px] uppercase tracking-[0.3em] text-white/35 sm:flex"
+              className="hidden shrink-0 items-center gap-3 text-[14px] uppercase tracking-[0.3em] text-white/35 sm:flex"
             >
               Scroll
               <ArrowDown size={15} strokeWidth={1.4} />
@@ -94,7 +94,7 @@ export default function TeamPage() {
           </motion.div>
 
           {/* Bottom section number */}
-          <div className="mt-20 text-[9px] tracking-[0.3em] text-white/20">
+          <div className="mt-20 text-[14px] tracking-[0.3em] text-white/20">
             06 / 06
           </div>
         </div>
@@ -116,11 +116,11 @@ export default function TeamPage() {
             <div className="grid gap-12 lg:grid-cols-[1fr_auto] lg:items-end">
 
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/35">
+                <p className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/35">
                   Work with us
                 </p>
 
-                <h2 className="mt-7 max-w-6xl text-[clamp(3.5rem,7vw,7.5rem)] font-semibold uppercase leading-[0.76] tracking-[-0.075em]">
+                <h2 className="mt-7 max-w-3xl text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.76] tracking-[-0.075em]">
                   Have a project
                   <br />
                   in mind
@@ -131,7 +131,7 @@ export default function TeamPage() {
               <motion.a
                 href="/contact"
                 whileHover={{ x: 5 }}
-                className="group flex w-fit items-center gap-4 text-[10px] font-semibold uppercase tracking-[0.25em]"
+                className="group flex w-fit items-center gap-4 text-[14px] font-semibold uppercase tracking-[0.25em]"
               >
                 Start a conversation
 

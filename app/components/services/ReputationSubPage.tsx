@@ -23,14 +23,14 @@ export default function ReputationSubPage({ service }: Props) {
         <div className="mx-auto w-full max-w-[1600px]">
           <motion.div initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="relative mb-8 flex items-center gap-3">
             <span className="h-px w-10 bg-[#e21d2b]" />
-            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/40">
+            <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/40">
               {service.number} / Online Reputation Management
             </span>
           </motion.div>
 
           <div className="relative overflow-hidden">
             <motion.h1 initial={{ y: "110%" }} animate={{ y: 0 }} transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
-              className="max-w-7xl text-[clamp(4rem,10vw,10rem)] font-semibold uppercase leading-[0.76] tracking-[-0.075em]">
+              className="max-w-7xl text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.76] tracking-[-0.075em]">
               {service.heroTitle.map((line, index) => (
                 <span key={line} className="block">{line}{index === service.heroTitle.length - 1 && <span className="text-[#e21d2b]">.</span>}</span>
               ))}
@@ -50,9 +50,9 @@ export default function ReputationSubPage({ service }: Props) {
       <section className="px-6 py-28 sm:px-10 sm:py-36 lg:px-14 lg:py-44">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
-            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">The service</span></div>
+            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">The service</span></div>
             <motion.div initial={{ opacity: 0, y: 35 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.8 }}>
-              <p className="max-w-5xl text-[clamp(2rem,4vw,4.5rem)] font-medium leading-[1.02] tracking-[-0.045em] text-black/80">{service.introLead}</p>
+              <p className="max-w-5xl text-[clamp(2rem,5vw,5.5rem)] font-medium leading-[1.02] tracking-[-0.045em] text-black/80">{service.introLead}</p>
               <p className="mt-10 max-w-2xl text-base leading-7 text-black/50">{service.introDescription}</p>
             </motion.div>
           </div>
@@ -62,9 +62,9 @@ export default function ReputationSubPage({ service }: Props) {
       <section className="bg-[#0a0a0a] px-6 py-28 text-white sm:px-10 sm:py-36 lg:px-14 lg:py-44">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
-            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/35">What we do</span></div>
+            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/35">What we do</span></div>
             <div>
-              <h2 className="text-[clamp(4rem,8vw,8.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]">
+              <h2 className="text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]">
                 {service.sectionTitle.map((line, index) => <span key={line} className="block">{line}{index === service.sectionTitle.length - 1 && <span className="text-[#e21d2b]">.</span>}</span>)}
               </h2>
               <p className="mt-10 max-w-2xl text-base leading-7 text-white/45">{service.sectionDescription}</p>
@@ -90,7 +90,7 @@ export default function ReputationSubPage({ service }: Props) {
       <section className="px-6 py-28 sm:px-10 sm:py-36 lg:px-14 lg:py-44">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
-            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">The principle</span></div>
+            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">The principle</span></div>
             <motion.div initial={{ opacity: 0, y: 35 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
               <p className="max-w-5xl text-[clamp(2.4rem,5vw,5.5rem)] font-semibold uppercase leading-[0.88] tracking-[-0.06em]">
                 Reputation<br />is built<br />in public<span className="text-[#e21d2b]">.</span>
@@ -114,16 +114,16 @@ export default function ReputationSubPage({ service }: Props) {
       <section className="bg-[#e9e6df] px-6 py-28 sm:px-10 sm:py-36 lg:px-14 lg:py-44">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
-            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">The reputation journey</span></div>
-            <h2 className="text-[clamp(4rem,8vw,8.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]">Listen.<br />Understand.<br />Respond.<br />Improve.<br />Protect<span className="text-[#e21d2b]">.</span></h2>
+            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">The reputation journey</span></div>
+            <h2 className="text-[clamp(2.5rem,5vw,5.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em]">Listen.<br />Understand.<br />Respond.<br />Improve.<br />Protect<span className="text-[#e21d2b]">.</span></h2>
           </div>
 
           <div className="mt-20 border-t border-black/15 lg:mt-28">
             {service.process.map((step, index) => (
               <motion.div key={step.number} initial={{ opacity: 0, y: 25 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6, delay: index * 0.05 }}
                 className="group grid gap-6 border-b border-black/15 py-8 sm:grid-cols-[70px_0.7fr_1.3fr] sm:items-center sm:py-10 lg:py-12">
-                <span className="text-[10px] tracking-[0.2em] text-black/30 transition-colors group-hover:text-[#e21d2b]">{step.number}</span>
-                <h3 className="text-[clamp(2.2rem,4vw,4.5rem)] font-semibold uppercase leading-[0.85] tracking-[-0.055em] transition-transform duration-500 group-hover:translate-x-2">{step.title}</h3>
+                <span className="text-[14px] tracking-[0.3em] text-black/30 transition-colors group-hover:text-[#e21d2b]">{step.number}</span>
+                <h3 className="text-[clamp(2.2rem,5vw,5.5rem)] font-semibold uppercase leading-[0.85] tracking-[-0.055em] transition-transform duration-500 group-hover:translate-x-2">{step.title}</h3>
                 <p className="max-w-lg text-sm leading-6 text-black/50 sm:text-base">{step.description}</p>
               </motion.div>
             ))}
@@ -134,7 +134,7 @@ export default function ReputationSubPage({ service }: Props) {
       <section className="bg-[#0a0a0a] px-6 py-28 text-white sm:px-10 sm:py-36 lg:px-14 lg:py-44">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
-            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/35">The result</span></div>
+            <div className="flex items-start gap-3"><span className="mt-1 h-px w-10 bg-[#e21d2b]" /><span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/35">The result</span></div>
             <motion.div initial={{ opacity: 0, y: 35 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
               <p className="max-w-5xl text-[clamp(2.4rem,5vw,5.5rem)] font-semibold uppercase leading-[0.88] tracking-[-0.06em]">
                 {service.resultTitle.map((line, index) => <span key={line} className="block">{line}{index === service.resultTitle.length - 1 && <span className="text-[#e21d2b]">.</span>}</span>)}
@@ -144,7 +144,7 @@ export default function ReputationSubPage({ service }: Props) {
           </div>
           <div className="mt-16 grid gap-4 border-t border-white/10 pt-7 sm:grid-cols-2 lg:mt-24 lg:grid-cols-4">
             {service.resultPoints.map((item) => (
-              <div key={item} className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/45">
+              <div key={item} className="flex items-center gap-3 text-[14px] font-semibold uppercase tracking-[0.2em] text-white/45">
                 <span className="flex h-7 w-7 items-center justify-center rounded-full border border-white/15"><Check size={13} strokeWidth={1.5} /></span>{item}
               </div>
             ))}
@@ -154,7 +154,7 @@ export default function ReputationSubPage({ service }: Props) {
 
       <section className="bg-[#0a0a0a] px-6 pb-24 text-white sm:px-10 sm:pb-28 lg:px-14">
         <div className="mx-auto max-w-[1600px]">
-          <div className="mb-10 flex items-center gap-3"><span className="h-px w-10 bg-[#e21d2b]" /><span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/35">Explore more</span></div>
+          <div className="mb-10 flex items-center gap-3"><span className="h-px w-10 bg-[#e21d2b]" /><span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-white/35">Explore more</span></div>
           <div className="border-t border-white/10">
             {relatedServices.map((item) => (
               <Link key={item.title} href={item.href} className="group flex items-center justify-between border-b border-white/10 py-7 sm:py-9">
@@ -172,10 +172,10 @@ export default function ReputationSubPage({ service }: Props) {
         <div className="mx-auto max-w-[1600px] border-t border-black/15 pt-7">
           <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">Start a conversation</span>
+              <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">Start a conversation</span>
               <h2 className="mt-5 text-[clamp(2.5rem,5vw,5rem)] font-semibold uppercase leading-[0.85] tracking-[-0.06em]">Ready to build<br />more trust<span className="text-[#e21d2b]">?</span></h2>
             </div>
-            <Link href="/contact" className="group flex w-fit items-center gap-4 text-[10px] font-semibold uppercase tracking-[0.25em]">
+            <Link href="/contact" className="group flex w-fit items-center gap-4 text-[14px] font-semibold uppercase tracking-[0.25em]">
               Start a project
               <span className="flex h-11 w-11 items-center justify-center rounded-full border border-black/20 transition-all duration-300 group-hover:border-[#e21d2b] group-hover:bg-[#e21d2b] group-hover:text-white">
                 <ArrowUpRight size={16} strokeWidth={1.5} className="transition-transform duration-300 group-hover:rotate-45" />
