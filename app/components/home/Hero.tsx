@@ -1,18 +1,12 @@
 "use client";
 
-import {
-  useRef,
-  useState,
-  type MouseEvent,
-} from "react";
-
+import { useState, type MouseEvent } from "react";
 import {
   motion,
   useMotionValue,
   useSpring,
   useTransform,
 } from "framer-motion";
-
 import {
   ArrowDown,
   ArrowUpRight,
@@ -29,52 +23,48 @@ import ParticleNetwork, {
   type TechNode,
 } from "./ParticleNetwork";
 
-/* =========================================================
-   TECHNOLOGY NODES
-========================================================= */
-
 const techNodes: TechNode[] = [
   {
     id: "web",
     label: "Web Development",
     shortLabel: "Web Development",
-    x: 0.57,
-    y: 0.23,
+    x: 0.60,
+    y: 0.22,
   },
   {
     id: "seo",
     label: "SEO",
     shortLabel: "SEO",
-    x: 0.73,
+    x: 0.79,
     y: 0.25,
   },
   {
     id: "marketing",
     label: "Digital Marketing",
     shortLabel: "Marketing",
-    x: 0.84,
-    y: 0.39,
+    x: 0.88,
+    y: 0.40,
   },
   {
     id: "ai",
     label: "AI & Automation",
     shortLabel: "AI & Automation",
-    x: 0.86,
-    y: 0.60,
+    x: 0.90,
+    y: 0.61,
   },
   {
     id: "mobile",
     label: "Mobile Apps",
     shortLabel: "Mobile Apps",
-    x: 0.74,
-    y: 0.79,
+    x: 0.77,
+    y: 0.80,
   },
   {
     id: "ecommerce",
     label: "E-Commerce",
     shortLabel: "E-Commerce",
     x: 0.54,
-    y: 0.74,
+    y: 0.77,
   },
   {
     id: "strategy",
@@ -84,10 +74,6 @@ const techNodes: TechNode[] = [
     y: 0.42,
   },
 ];
-
-/* =========================================================
-   NODE ICONS
-========================================================= */
 
 const nodeIcons = {
   web: Code2,
@@ -99,85 +85,37 @@ const nodeIcons = {
   strategy: Target,
 };
 
-/* =========================================================
-   NODE LABEL POSITION
-========================================================= */
-
-const labelPosition: Record<
-  string,
-  "left" | "right"
-> = {
-  web: "left",
-  seo: "right",
-  marketing: "right",
-  ai: "right",
-  mobile: "right",
-  ecommerce: "right",
-  strategy: "left",
-};
-
-/* =========================================================
-   HERO
-========================================================= */
-
 export default function Hero() {
-  /*
-   * IMPORTANT:
-   *
-   * This ref is read directly by the canvas.
-   * Updating it does NOT trigger a React render.
-   *
-   * This is one of the main performance optimizations.
-   */
-  const mouseRef = useRef({
-    x: 0,
-    y: 0,
-    active: false,
-  });
-
-  const [hoveredNode, setHoveredNode] =
-    useState<string | null>(null);
-
-  /* =======================================================
-     SUBTLE HERO PARALLAX
-  ======================================================= */
+  const [hoveredNode, setHoveredNode] = useState<string | null>(
+    null
+  );
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
   const smoothX = useSpring(mouseX, {
-    stiffness: 70,
-    damping: 24,
+    stiffness: 75,
+    damping: 22,
     mass: 0.45,
   });
 
   const smoothY = useSpring(mouseY, {
-    stiffness: 70,
-    damping: 24,
+    stiffness: 75,
+    damping: 22,
     mass: 0.45,
   });
 
-  /*
-   * VERY small movement.
-   *
-   * The galaxy should feel alive,
-   * not like the entire page is moving.
-   */
   const visualX = useTransform(
     smoothX,
     [-1, 1],
-    [-7, 7]
+    [-8, 8]
   );
 
   const visualY = useTransform(
     smoothY,
     [-1, 1],
-    [-5, 5]
+    [-6, 6]
   );
-
-  /* =======================================================
-     MOUSE MOVE
-  ======================================================= */
 
   const handleMouseMove = (
     event: MouseEvent<HTMLElement>
@@ -185,45 +123,19 @@ export default function Hero() {
     const rect =
       event.currentTarget.getBoundingClientRect();
 
-    /*
-     * Canvas coordinates.
-     *
-     * These are written directly into the ref.
-     */
-    mouseRef.current.x =
-      event.clientX - rect.left;
-
-    mouseRef.current.y =
-      event.clientY - rect.top;
-
-    mouseRef.current.active = true;
-
-    /*
-     * Normalized coordinates for the tiny
-     * Framer Motion parallax.
-     */
     const x =
-      (event.clientX - rect.left) /
-      rect.width;
+      (event.clientX - rect.left) / rect.width;
 
     const y =
-      (event.clientY - rect.top) /
-      rect.height;
+      (event.clientY - rect.top) / rect.height;
 
     mouseX.set((x - 0.5) * 2);
     mouseY.set((y - 0.5) * 2);
   };
 
-  /* =======================================================
-     MOUSE LEAVE
-  ======================================================= */
-
   const handleMouseLeave = () => {
-    mouseRef.current.active = false;
-
     mouseX.set(0);
     mouseY.set(0);
-
     setHoveredNode(null);
   };
 
@@ -232,65 +144,40 @@ export default function Hero() {
       id="hero"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="
-        relative
-        min-h-screen
-        overflow-hidden
-        bg-[#02070d]
-      "
+      className="relative min-h-screen overflow-hidden bg-[#03070c]"
     >
-      {/* ===================================================
-          GALAXY BACKGROUND
-      =================================================== */}
+      {/* =====================================================
+          BACKGROUND
+      ===================================================== */}
 
-      <div
-        className="
-          pointer-events-none
-          absolute
-          inset-0
-          z-0
-          overflow-hidden
-        "
-      >
-        {/* Main blue atmosphere */}
-
+      <div className="absolute inset-0">
+        {/* Deep radial atmosphere */}
         <div
           className="
-            absolute
-            left-[45%]
-            top-[20%]
-            h-[650px]
-            w-[650px]
-            -translate-x-1/2
-            rounded-full
-            bg-blue-600/[0.045]
-            blur-[110px]
+            absolute inset-0
+            bg-[radial-gradient(circle_at_70%_48%,rgba(38,78,180,0.13),transparent_32%)]
           "
         />
 
-        {/* Small central atmosphere */}
-
         <div
           className="
-            absolute
-            left-[69%]
-            top-[49%]
-            h-[280px]
-            w-[280px]
-            -translate-x-1/2
-            -translate-y-1/2
-            rounded-full
-            bg-blue-500/[0.07]
-            blur-[90px]
+            absolute inset-0
+            bg-[radial-gradient(circle_at_82%_30%,rgba(77,104,255,0.08),transparent_24%)]
           "
         />
 
-        {/* Canvas particle system */}
+        {/* Subtle vignette */}
+        <div
+          className="
+            absolute inset-0
+            bg-[radial-gradient(circle,transparent_30%,rgba(0,0,0,0.55)_100%)]
+          "
+        />
 
         <ParticleNetwork
-          nodes={techNodes}
-          mouseRef={mouseRef}
-        />
+  nodes={techNodes}
+  hoveredNode={hoveredNode}
+/>
       </div>
 
       {/* ===================================================
@@ -300,30 +187,25 @@ export default function Hero() {
       <div
         className="
           pointer-events-none
-          absolute
-          inset-x-0
-          top-0
-          z-[2]
-          h-44
+          absolute inset-x-0 top-0 z-[2]
+          h-40
           bg-gradient-to-b
           from-[#02070d]
           to-transparent
         "
       />
 
-      {/* ===================================================
-          LEFT GRADIENT
-      =================================================== */}
+      {/* =====================================================
+          LEFT DARKNESS
+      ===================================================== */}
 
       <div
         className="
           pointer-events-none
-          absolute
-          inset-0
-          z-[2]
+          absolute inset-0 z-[2]
           bg-gradient-to-r
-          from-[#03070c]/72
-          via-[#03070c]/48
+          from-[#03070c]/95
+          via-[#03070c]/70
           to-transparent
         "
       />
@@ -346,9 +228,9 @@ export default function Hero() {
         "
       />
 
-      {/* ===================================================
+      {/* =====================================================
           INTERACTIVE TECHNOLOGY NODES
-      =================================================== */}
+      ===================================================== */}
 
       <motion.div
         style={{
@@ -357,11 +239,8 @@ export default function Hero() {
         }}
         className="
           pointer-events-none
-          absolute
-          inset-0
-          z-[5]
-          hidden
-          lg:block
+          absolute inset-0 z-[5]
+          hidden lg:block
         "
       >
         {techNodes.map((node) => {
@@ -370,24 +249,16 @@ export default function Hero() {
               node.id as keyof typeof nodeIcons
             ];
 
-          const active =
-            hoveredNode === node.id;
-
-          const labelSide =
-            labelPosition[node.id] ?? "right";
+          const active = hoveredNode === node.id;
 
           return (
             <div
               key={node.id}
-              className="
-                pointer-events-auto
-                absolute
-                -translate-x-1/2
-                -translate-y-1/2
-              "
+              className="pointer-events-auto absolute"
               style={{
                 left: `${node.x * 100}%`,
                 top: `${node.y * 100}%`,
+                transform: "translate(-50%, -50%)",
               }}
               onMouseEnter={() =>
                 setHoveredNode(node.id)
@@ -397,34 +268,25 @@ export default function Hero() {
               }
             >
               <div
-                className={`
+                className="
                   flex
                   items-center
                   gap-3
-                  ${
-                    labelSide === "left"
-                      ? "flex-row-reverse"
-                      : "flex-row"
-                  }
-                `}
+                "
               >
-                {/* NODE */}
-
+                {/* Node */}
                 <motion.div
                   animate={{
-                    scale: active ? 1.1 : 1,
-
+                    scale: active ? 1.12 : 1,
                     borderColor: active
-                      ? "rgba(120,165,255,0.85)"
-                      : "rgba(120,155,210,0.38)",
-
+                      ? "rgba(105,150,255,0.9)"
+                      : "rgba(150,180,255,0.5)",
                     boxShadow: active
-                      ? "0 0 28px rgba(65,120,255,0.28)"
+                      ? "0 0 30px rgba(70,120,255,0.35)"
                       : "0 0 0 rgba(0,0,0,0)",
                   }}
                   transition={{
                     duration: 0.25,
-                    ease: "easeOut",
                   }}
                   className="
                     relative
@@ -436,95 +298,55 @@ export default function Hero() {
                     justify-center
                     rounded-full
                     border
-                    bg-[#030913]/80
-                    backdrop-blur-sm
+                    bg-[#050a12]/75
+                    backdrop-blur-md
                   "
                 >
-                  {/* Outer ring */}
+                  <Icon
+                    size={17}
+                    strokeWidth={1.4}
+                    className="text-white/85"
+                  />
 
                   <span
                     className="
-                      pointer-events-none
                       absolute
-                      inset-[-5px]
+                      inset-[-6px]
                       rounded-full
                       border
-                      border-blue-400/[0.08]
-                    "
-                  />
-
-                  {/* Icon */}
-
-                  <Icon
-                    size={17}
-                    strokeWidth={1.35}
-                    className={`
-                      transition-colors
-                      duration-300
-                      ${
-                        active
-                          ? "text-blue-200"
-                          : "text-white/65"
-                      }
-                    `}
-                  />
-
-                  {/* Small active dot */}
-
-                  <motion.span
-                    animate={{
-                      opacity: active
-                        ? 1
-                        : 0,
-                      scale: active
-                        ? 1
-                        : 0.5,
-                    }}
-                    transition={{
-                      duration: 0.2,
-                    }}
-                    className="
-                      absolute
-                      -right-1
-                      -top-1
-                      h-1.5
-                      w-1.5
-                      rounded-full
-                      bg-blue-300
-                      shadow-[0_0_10px_rgba(110,165,255,0.9)]
+                      border-blue-400/10
                     "
                   />
                 </motion.div>
 
-                {/* LABEL */}
-
-                <span
+                {/* Label */}
+                <div
                   className={`
                     whitespace-nowrap
                     text-[9px]
                     font-medium
                     uppercase
-                    tracking-[0.2em]
+                    tracking-[0.22em]
                     transition-all
                     duration-300
                     ${
                       active
                         ? "text-white"
-                        : "text-white/50"
+                        : "text-white/60"
                     }
                   `}
                 >
                   {node.shortLabel}
-                </span>
+                </div>
               </div>
             </div>
           );
         })}
       </motion.div>
 
-      {/* ===================================================
-          CENTRAL ATRIA CORE
-      =================================================== */}
+      {/* =====================================================
+          CENTRAL CORE
+      ===================================================== */}
 
       <motion.div
         style={{
@@ -543,76 +365,51 @@ export default function Hero() {
           lg:block
         "
       >
-        {/* Outer orbit */}
-
         <motion.div
           animate={{
-            rotate: 360,
+            scale: [1, 1.08, 1],
+            opacity: [0.65, 1, 0.65],
           }}
           transition={{
-            duration: 38,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-          className="
-            absolute
-            -inset-9
-            rounded-full
-            border
-            border-blue-400/[0.09]
-          "
-        />
-
-        {/* Main core */}
-
-        <motion.div
-          animate={{
-            scale: [1, 1.035, 1],
-          }}
-          transition={{
-            duration: 4,
+            duration: 3.5,
             repeat: Infinity,
             ease: "easeInOut",
           }}
           className="
             relative
             flex
-            h-20
-            w-20
+            h-24
+            w-24
             items-center
             justify-center
             rounded-full
             border
-            border-blue-300/30
-            bg-blue-500/[0.025]
+            border-blue-300/40
+            bg-blue-500/[0.04]
+            shadow-[0_0_70px_rgba(65,105,255,0.28)]
+            backdrop-blur-sm
           "
         >
-          {/* Inner ring */}
-
-          <span
+          <div
             className="
               absolute
-              inset-2
+              inset-3
               rounded-full
               border
-              border-blue-300/[0.14]
+              border-blue-300/20
             "
           />
 
-          {/* Core glow */}
-
-          <span
+          <div
             className="
               absolute
-              h-2.5
-              w-2.5
+              h-3
+              w-3
               rounded-full
-              bg-blue-100
-              shadow-[0_0_18px_rgba(130,180,255,0.95)]
+              bg-blue-200
+              shadow-[0_0_25px_rgba(130,170,255,1)]
             "
           />
-
-          {/* Label */}
 
           <span
             className="
@@ -622,7 +419,7 @@ export default function Hero() {
               font-medium
               uppercase
               tracking-[0.3em]
-              text-white/35
+              text-white/40
             "
           >
             Atria
@@ -652,28 +449,8 @@ export default function Hero() {
           lg:px-14
         "
       >
-        {/*
-          ===================================================
-          LEFT CONTENT POSITIONING
-
-          The entire content block is lifted slightly on
-          desktop so the large heading has enough room below.
-
-          Mobile stays centered naturally.
-        ===================================================
-        */}
-
-        <div
-          className="
-            max-w-[650px]
-            lg:max-w-[660px]
-            lg:-translate-y-10
-            xl:-translate-y-12
-          "
-        >
-          {/* =================================================
-              EYEBROW
-          ================================================= */}
+        <div className="max-w-[670px]">
+          {/* Eyebrow */}
 
           <motion.div
             initial={{
@@ -685,7 +462,7 @@ export default function Hero() {
               y: 0,
             }}
             transition={{
-              delay: 0.15,
+              delay: 0.2,
               duration: 0.7,
               ease: [0.22, 1, 0.36, 1],
             }}
@@ -696,14 +473,7 @@ export default function Hero() {
               gap-3
             "
           >
-            <span
-              className="
-                h-px
-                w-10
-                bg-blue-400
-              "
-            />
-
+            <span className="h-px w-10 bg-blue-400" />
             <span
               className="
                 text-[10px]
@@ -736,7 +506,7 @@ export default function Hero() {
                 y: 0,
               }}
               transition={{
-                delay: 0.25,
+                delay: 0.35,
                 duration: 0.95,
                 ease: [0.76, 0, 0.24, 1],
               }}
@@ -782,12 +552,12 @@ export default function Hero() {
               y: 0,
             }}
             transition={{
-              delay: 0.65,
+              delay: 0.8,
               duration: 0.7,
             }}
             className="
-              mt-6
-              max-w-[470px]
+              mt-8
+              max-w-[480px]
               text-sm
               leading-6
               text-white/55
@@ -795,9 +565,8 @@ export default function Hero() {
               sm:leading-6
             "
           >
-            We build powerful websites, intuitive apps and
-            data-driven marketing strategies that help
-            businesses grow, engage and stay ahead.
+            We build powerful websites, intuitive apps and data-driven marketing
+            strategies that help businesses grow, engage and stay ahead.
           </motion.p>
 
           {/* =================================================
@@ -814,11 +583,11 @@ export default function Hero() {
               y: 0,
             }}
             transition={{
-              delay: 0.85,
+              delay: 1,
               duration: 0.7,
             }}
             className="
-              mt-7
+              mt-8
               flex
               flex-col
               gap-3
@@ -848,18 +617,12 @@ export default function Hero() {
                 hover:text-white
               "
             >
-              <span>
-                Start a Project
-              </span>
+              <span>Start a Project</span>
 
               <ArrowUpRight
                 size={16}
                 strokeWidth={1.8}
-                className="
-                  transition-transform
-                  duration-300
-                  group-hover:rotate-45
-                "
+                className="transition-transform duration-300 group-hover:rotate-45"
               />
             </a>
 
@@ -887,58 +650,87 @@ export default function Hero() {
                 hover:bg-white/[0.04]
               "
             >
-              <span>
-                Explore Our Work
-              </span>
+              <span>Explore Our Work</span>
 
               <ArrowUpRight
                 size={16}
                 strokeWidth={1.8}
-                className="
-                  transition-transform
-                  duration-300
-                  group-hover:rotate-45
-                "
+                className="transition-transform duration-300 group-hover:rotate-45"
               />
             </a>
           </motion.div>
+        </div>
 
-          {/* =================================================
-              MOBILE NETWORK LABEL
-          ================================================= */}
+        {/* =====================================================
+            MOBILE NETWORK
+        ===================================================== */}
 
+        <div
+          className="
+            relative
+            mt-14
+            h-[220px]
+            w-full
+            lg:hidden
+          "
+        >
           <div
             className="
-              mt-16
-              grid
-              grid-cols-2
-              gap-2
-              lg:hidden
+              absolute
+              left-1/2
+              top-1/2
+              flex
+              h-16
+              w-16
+              -translate-x-1/2
+              -translate-y-1/2
+              items-center
+              justify-center
+              rounded-full
+              border
+              border-blue-400/40
+              bg-blue-500/5
+              shadow-[0_0_40px_rgba(60,100,255,0.2)]
             "
           >
-            {techNodes.slice(0, 6).map(
-              (node) => (
-                <div
-                  key={node.id}
-                  className="
-                    rounded-full
-                    border
-                    border-white/[0.08]
-                    bg-white/[0.025]
-                    px-3
-                    py-2
-                    text-center
-                    text-[8px]
-                    uppercase
-                    tracking-[0.15em]
-                    text-white/45
-                  "
-                >
-                  {node.shortLabel}
-                </div>
-              )
-            )}
+            <Sparkles
+              size={18}
+              className="text-blue-300"
+            />
           </div>
+
+          {techNodes.slice(0, 5).map((node, index) => {
+            const positions = [
+              "left-[5%] top-[10%]",
+              "right-[5%] top-[12%]",
+              "right-[2%] bottom-[8%]",
+              "left-[8%] bottom-[5%]",
+              "left-1/2 top-[2%]",
+            ];
+
+            return (
+              <div
+                key={node.id}
+                className={`
+                  absolute
+                  ${positions[index]}
+                  rounded-full
+                  border
+                  border-white/15
+                  bg-white/[0.03]
+                  px-3
+                  py-2
+                  text-[8px]
+                  uppercase
+                  tracking-[0.16em]
+                  text-white/60
+                  backdrop-blur-md
+                `}
+              >
+                {node.shortLabel}
+              </div>
+            );
+          })}
         </div>
 
         {/* =================================================
@@ -953,7 +745,7 @@ export default function Hero() {
             opacity: 1,
           }}
           transition={{
-            delay: 1.4,
+            delay: 1.5,
             duration: 0.8,
           }}
           className="
@@ -968,29 +760,22 @@ export default function Hero() {
             lg:right-14
           "
         >
-          <span
-            className="
-              text-[9px]
-              uppercase
-              tracking-[0.3em]
-            "
-          >
+          <span className="text-[9px] uppercase tracking-[0.3em]">
             Scroll to explore
           </span>
-
           <motion.div
             animate={{
-              y: [0, 6, 0],
+              y: [0, 7, 0],
             }}
             transition={{
-              duration: 1.7,
+              duration: 1.6,
               repeat: Infinity,
               ease: "easeInOut",
             }}
           >
             <ArrowDown
               size={16}
-              strokeWidth={1.4}
+              strokeWidth={1.5}
             />
           </motion.div>
         </motion.div>
