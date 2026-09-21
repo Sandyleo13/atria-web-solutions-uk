@@ -37,7 +37,7 @@ export default function AboutPreview() {
           >
             <span className="mt-1 h-px w-10 bg-[#e21d2b]" />
 
-            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+            <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
               06 / About Atria
             </span>
           </motion.div>
@@ -50,7 +50,7 @@ export default function AboutPreview() {
               duration: 0.9,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="max-w-6xl text-[clamp(3.5rem,8vw,8.5rem)] font-semibold uppercase leading-[0.8] tracking-[-0.07em] text-[#0a0a0a]"
+            className="max-w-3xl text-[clamp(2rem,5vw,5.5rem)] font-semibold uppercase leading-[0.8] tracking-[-0.07em] text-[#0a0a0a]"
           >
             We create
             <br />
@@ -69,7 +69,7 @@ export default function AboutPreview() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/35">
+            <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/35">
               About us
             </span>
           </motion.div>
@@ -94,7 +94,7 @@ export default function AboutPreview() {
 
             <a
               href="/about"
-              className="group mt-8 flex w-fit items-center gap-4 text-[10px] font-semibold uppercase tracking-[0.25em]"
+              className="group mt-8 flex w-fit items-center gap-4 text-[14px] font-semibold uppercase tracking-[0.25em]"
             >
               More about Atria
 
@@ -154,11 +154,11 @@ export default function AboutPreview() {
             transition={{ duration: 0.7 }}
             className="mb-8 flex items-center justify-between border-t border-black/15 pt-7"
           >
-            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/40">
+            <span className="text-[14px] font-semibold uppercase tracking-[0.3em] text-black/40">
               Our team
             </span>
 
-            <span className="text-[10px] uppercase tracking-[0.25em] text-black/30">
+            <span className="text-[14px] uppercase tracking-[0.25em] text-black/30">
               Strategy / Design / Technology / Growth
             </span>
           </motion.div>
@@ -177,7 +177,7 @@ export default function AboutPreview() {
                 className="group min-h-[210px] border-b border-r border-black/15 p-6 transition-colors duration-500 hover:bg-[#0a0a0a] hover:text-white sm:p-8 lg:min-h-[260px]"
               >
                 <div className="flex h-full flex-col justify-between">
-                  <span className="text-[10px] tracking-[0.2em] text-black/30 transition-colors duration-500 group-hover:text-white/30">
+                  <span className="text-[14px] tracking-[0.2em] text-black/30 transition-colors duration-500 group-hover:text-white/30">
                     0{index + 1}
                   </span>
 
@@ -186,7 +186,7 @@ export default function AboutPreview() {
                       {member.name}
                     </h3>
 
-                    <p className="mt-3 text-xs uppercase tracking-[0.2em] text-black/40 transition-colors duration-500 group-hover:text-white/40">
+                    <p className="mt-3 text-xl uppercase tracking-[0.2em] text-black/40 transition-colors duration-500 group-hover:text-white/40">
                       {member.role}
                     </p>
                   </div>
@@ -204,7 +204,7 @@ export default function AboutPreview() {
           >
             <a
               href="/team"
-              className="group flex w-fit items-center gap-4 text-[10px] font-semibold uppercase tracking-[0.25em]"
+              className="group flex w-fit items-center gap-4 text-[14px] font-semibold uppercase tracking-[0.25em]"
             >
               Meet the team
 

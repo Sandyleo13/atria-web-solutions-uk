@@ -10,8 +10,6 @@ import {
 
 import type { Industry } from "../../../data/industries";
 
-import Navbar from "../layout/Navbar";
-import Footer from "../layout/Footer";
 
 type IndustryPageProps = {
   industry: Industry;
@@ -26,7 +24,6 @@ export default function IndustryPage({
       {/* =========================
           NAVBAR
       ========================= */}
-      <Navbar />
 
       {/* =========================
           HERO
@@ -405,7 +402,6 @@ export default function IndustryPage({
       {/* =========================
           FOOTER
       ========================= */}
-      <Footer />
 
     </main>
   );

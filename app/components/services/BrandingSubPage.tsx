@@ -3,8 +3,6 @@
 import { motion } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Check } from "lucide-react";
 import Link from "next/link";
-import Navbar from "../layout/Navbar";
-import Footer from "../layout/Footer";
 import type { BrandingSubService } from "../../../data/branding";
 
 type Props = { service: BrandingSubService };
@@ -25,7 +23,6 @@ export default function BrandingSubPage({ service }: Props) {
 
   return (
     <main className="overflow-hidden bg-[#f4f2ed]">
-      <Navbar />
 
       <section className="relative flex min-h-[85vh] items-end overflow-hidden bg-[#0a0a0a] px-6 pb-20 pt-32 text-white sm:px-10 sm:pb-24 lg:px-14 lg:pb-28">
         <div className="pointer-events-none absolute inset-0 opacity-[0.07]" style={{
@@ -176,7 +173,6 @@ export default function BrandingSubPage({ service }: Props) {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

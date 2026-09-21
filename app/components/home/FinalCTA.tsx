@@ -26,7 +26,7 @@ export default function FinalCTA() {
               <div className="flex items-center gap-3">
                 <span className="h-px w-8 bg-[#e21d2b]" />
 
-                <span className="text-[9px] font-semibold uppercase tracking-[0.3em] text-black/40">
+                <span className="text-[12px] font-semibold uppercase tracking-[0.3em] text-black/40">
                   Let's work together
                 </span>
               </div>
@@ -39,7 +39,7 @@ export default function FinalCTA() {
                   Ready to start<span className="text-[#e21d2b]">?</span>
                 </h2>
 
-                <p className="mt-4 max-w-md text-sm leading-6 text-black/50">
+                <p className="mt-4 max-w-md text-sx leading-6 text-black/50">
                   Have a project in mind? Let's create something meaningful
                   together.
                 </p>
@@ -47,7 +47,7 @@ export default function FinalCTA() {
 
               <a
                 href="/contact"
-                className="group flex w-fit shrink-0 items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#0a0a0a]"
+                className="group flex w-fit shrink-0 items-center gap-3 text-[14px] font-semibold uppercase tracking-[0.22em] text-[#0a0a0a]"
               >
                 <span className="border-b border-black/30 pb-2 transition-colors duration-300 group-hover:border-[#e21d2b] group-hover:text-[#e21d2b]">
                   Start a project

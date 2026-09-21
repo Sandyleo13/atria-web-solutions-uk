@@ -87,7 +87,7 @@ export default function Services() {
             <div className="flex items-center gap-3">
               <span className="h-px w-10 bg-[#e21d2b]" />
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/45">
+              <span className="text-[15px] font-semibold uppercase tracking-[0.3em] text-black/45">
                 02 / Services
               </span>
             </div>
@@ -101,11 +101,9 @@ export default function Services() {
               duration: 0.9,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="max-w-5xl text-[clamp(4rem,9vw,9.5rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em] text-[#0a0a0a]"
+            className="max-w-none whitespace-nowrap text-[clamp(2rem,5vw,5.5rem)] font-semibold uppercase leading-[0.82] tracking-[-0.06em] text-[#0a0a0a]"
           >
-            What
-            <br />
-            we do<span className="text-[#e21d2b]">.</span>
+            What we do<span className="text-[#e21d2b]">.</span>
           </motion.h2>
         </div>
 
@@ -135,7 +133,7 @@ export default function Services() {
                 >
                   {/* Number */}
                   <span
-                    className={`w-8 shrink-0 text-[10px] font-medium tracking-[0.2em] transition-colors duration-300 sm:w-12 ${
+                    className={`w-8 shrink-0 text-[14px] font-medium tracking-[0.2em] transition-colors duration-300 sm:w-12 ${
                       isActive ? "text-[#e21d2b]" : "text-black/35"
                     }`}
                   >
@@ -144,7 +142,7 @@ export default function Services() {
 
                   {/* Title */}
                   <span
-                    className={`text-[clamp(2rem,5vw,5.2rem)] font-semibold uppercase leading-[0.85] tracking-[-0.055em] transition-all duration-500 ${
+                    className={`text-[clamp(1.5rem,4vw,5.2rem)] font-semibold uppercase leading-[0.85] tracking-[-0.055em] transition-all duration-500 ${
                       isActive
                         ? "translate-x-2 text-[#e21d2b]"
                         : "text-[#0a0a0a]"

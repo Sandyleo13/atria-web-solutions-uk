@@ -2,8 +2,6 @@
 
 import { motion } from "framer-motion";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
-import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
 
 const sections = [
   {
@@ -175,7 +173,6 @@ export default function PrivacyPage() {
   return (
     <main className="overflow-hidden bg-[#f7f5f0] text-[#090909]">
       {/* Dark logo / menu for light legal page */}
-      <Navbar logoVariant="dark" />
 
       {/* =====================================================
           HERO
@@ -341,7 +338,6 @@ export default function PrivacyPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

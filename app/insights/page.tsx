@@ -3,8 +3,6 @@
 import { motion } from "framer-motion";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
 
 const featuredInsight = {
   category: "Digital Strategy",
@@ -68,7 +66,6 @@ const topics = [
 export default function InsightsPage() {
   return (
     <main className="overflow-hidden bg-[#f4f2ed]">
-      <Navbar />
 
       {/* Hero */}
       <section className="relative flex min-h-[78vh] items-end bg-[#0a0a0a] px-6 pb-20 pt-32 text-white sm:px-10 sm:pb-24 lg:px-14 lg:pb-28">
@@ -381,7 +378,6 @@ export default function InsightsPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

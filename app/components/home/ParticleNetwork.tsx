@@ -260,8 +260,8 @@ export default function ParticleNetwork() {
 
       const desktop = W >= 900;
 
-      const baseX = desktop ? W * 0.655 : W * 0.58;
-      const baseY = desktop ? H * 0.445 : H * 0.42;
+      const baseX = desktop ? W * 0.655 : W * 0.5;
+      const baseY = desktop ? H * 0.445 : H * 0.68;
 
       return {
         x: baseX,
@@ -286,8 +286,8 @@ export default function ParticleNetwork() {
       */
 
       const radius = desktop
-        ? Math.min(W * 0.94, H * 0.98)
-        : Math.min(W * 0.82, H * 0.56);
+        ? Math.min(W * 0.86, H * 0.9)
+        : Math.min(W * 0.72, H * 0.48);
 
       const angle = (node.angle * Math.PI) / 180;
 
@@ -875,7 +875,7 @@ export default function ParticleNetwork() {
       labelSide: "left" | "right",
       active = false
     ) => {
-      const R = W >= 900 ? 38 : 28;
+      const R = W >= 900 ? 34 : 22;
       const intensity = active ? 1 : pulse;
 
       /* Transparent eclipse node: glow and rings only, no interior fill. */
@@ -978,42 +978,31 @@ export default function ParticleNetwork() {
         Label outside the circle
       */
 
-      const labelX =
-        labelSide === "right"
-          ? x + R + 20
-          : x - R - 20;
+      if (W >= 640) {
+        const labelX =
+          labelSide === "right"
+            ? x + R + 20
+            : x - R - 20;
 
-      ctx.save();
+        ctx.save();
+        ctx.font = "500 10px Inter, Arial, sans-serif";
+        ctx.fillStyle = active
+          ? "rgba(190,230,255,1)"
+          : "rgba(245,248,255,0.88)";
+        ctx.textAlign = labelSide === "right" ? "left" : "right";
+        ctx.textBaseline = "middle";
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = "rgba(100,170,255,0.2)";
 
-      ctx.font =
-        "500 10px Inter, Arial, sans-serif";
+        label.forEach((line, index) => {
+          const offset =
+            (index - (label.length - 1) / 2) * 14;
 
-      ctx.fillStyle = active
-        ? "rgba(190,230,255,1)"
-        : "rgba(245,248,255,0.88)";
+          ctx.fillText(line, labelX, y + offset);
+        });
 
-      ctx.textAlign =
-        labelSide === "right"
-          ? "left"
-          : "right";
-
-      ctx.textBaseline = "middle";
-
-      ctx.shadowBlur = 6;
-      ctx.shadowColor = "rgba(100,170,255,0.2)";
-
-      label.forEach((line, index) => {
-        const offset =
-          (index - (label.length - 1) / 2) * 14;
-
-        ctx.fillText(
-          line,
-          labelX,
-          y + offset
-        );
-      });
-
-      ctx.restore();
+        ctx.restore();
+      }
     };
 
     /* A few background links carry slower moving light particles. */
@@ -1321,7 +1310,7 @@ export default function ParticleNetwork() {
 
       NODES.forEach((node, index) => {
         const { x, y } = getNodePosition(node);
-        const NODE_RADIUS = W >= 900 ? 38 : 28;
+        const NODE_RADIUS = W >= 900 ? 34 : 22;
         const dx = x - cx;
         const dy = y - cy;
         const distance = Math.hypot(dx, dy);

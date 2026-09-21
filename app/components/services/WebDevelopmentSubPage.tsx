@@ -10,8 +10,6 @@ import {
 
 import type { WebDevelopmentService } from "../../../data/web-development";
 
-import Navbar from "../layout/Navbar";
-import Footer from "../layout/Footer";
 
 type Props = {
   service: WebDevelopmentService;
@@ -22,7 +20,6 @@ export default function WebDevelopmentSubPage({
 }: Props) {
   return (
     <main className="overflow-hidden bg-[#f4f2ed]">
-      <Navbar />
 
       {/* =====================================================
           HERO
@@ -462,7 +459,6 @@ export default function WebDevelopmentSubPage({
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

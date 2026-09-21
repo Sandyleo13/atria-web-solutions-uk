@@ -4,8 +4,6 @@ import { FormEvent, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Check, Mail, MapPin, ShieldCheck } from "lucide-react";
 import Link from "next/link";
-import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
 
 const services = [
   {
@@ -42,7 +40,6 @@ export default function ContactPage() {
 
   return (
     <main className="overflow-hidden bg-[#f7f5f0]">
-      <Navbar logoVariant="dark" />
 
       {/* Contact */}
       <section className="px-6 py-20 sm:px-10 sm:py-28 lg:px-14 lg:py-32">
@@ -323,7 +320,6 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

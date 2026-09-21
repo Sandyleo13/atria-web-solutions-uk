@@ -10,8 +10,6 @@ import {
 
 import type { EcommerceService } from "../../../data/ecommerce";
 
-import Navbar from "../layout/Navbar";
-import Footer from "../layout/Footer";
 
 type Props = {
   service: EcommerceService;
@@ -22,7 +20,6 @@ export default function EcommerceSubPage({
 }: Props) {
   return (
     <main className="overflow-hidden bg-[#f4f2ed]">
-      <Navbar />
 
       {/* =====================================================
           HERO
@@ -455,7 +452,6 @@ export default function EcommerceSubPage({
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }
