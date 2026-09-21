@@ -124,11 +124,6 @@ export default function ParticleNetwork() {
 
     let isVisible = true;
 
-    const mouse = {
-      x: 0,
-      y: 0,
-    };
-
     let touchedNode: string | null = null;
 
     /* ========================================================
@@ -177,7 +172,7 @@ export default function ParticleNetwork() {
       particles.push({
         x,
         y,
-        r: 0.65 + rng() * 1.65,
+        r: 0.8 + rng() * 2,
         alpha: 0.28 + rng() * 0.72,
         phase: rng() * Math.PI * 2,
         speed: 0.0008 + rng() * 0.0018,
@@ -192,7 +187,7 @@ export default function ParticleNetwork() {
       particles.push({
         x: 0.38 + rng() * 0.59,
         y: 0.08 + rng() * 0.78,
-        r: 0.45 + rng() * 1.25,
+        r: 0.55 + rng() * 1.5,
         alpha: 0.14 + rng() * 0.42,
         phase: rng() * Math.PI * 2,
         speed: 0.0005 + rng() * 0.0012,
@@ -265,12 +260,12 @@ export default function ParticleNetwork() {
 
       const desktop = W >= 900;
 
-      const baseX = desktop ? W * 0.655 : W * 0.68;
-      const baseY = desktop ? H * 0.445 : H * 0.42;
+      const baseX = desktop ? W * 0.655 : W * 0.5;
+      const baseY = desktop ? H * 0.445 : H * 0.68;
 
       return {
-        x: baseX + mouse.x * 12,
-        y: baseY + mouse.y * 8,
+        x: baseX,
+        y: baseY,
       };
     };
 
@@ -291,8 +286,8 @@ export default function ParticleNetwork() {
       */
 
       const radius = desktop
-        ? Math.min(W * 0.72, H * 0.76)
-        : Math.min(W, H) * 0.42;
+        ? Math.min(W * 0.86, H * 0.9)
+        : Math.min(W * 0.72, H * 0.48);
 
       const angle = (node.angle * Math.PI) / 180;
 
@@ -557,7 +552,7 @@ export default function ParticleNetwork() {
       for (let i = 0; i < 70; i++) {
         const x = W * (0.34 + starRng() * 0.66);
         const y = H * (0.05 + starRng() * 0.86);
-        const radius = 0.25 + starRng() * 0.65;
+        const radius = 0.35 + starRng() * 0.8;
         const alpha = 0.12 + starRng() * 0.24;
 
         staticCtx.beginPath();
@@ -618,12 +613,61 @@ export default function ParticleNetwork() {
 
       points.push([x2, y2]);
 
+      /* Larger impact particles gather at the node contact point. */
+      const contactPoint = points[points.length - 1];
+      const contactBefore = points[points.length - 2];
+      const contactAngle = Math.atan2(
+        contactPoint[1] - contactBefore[1],
+        contactPoint[0] - contactBefore[0]
+      );
+
+      for (let i = 0; i < 3; i++) {
+        const contactProgress = 0.35 + i * 0.28;
+        const contactX =
+          contactBefore[0] +
+          (contactPoint[0] - contactBefore[0]) * contactProgress;
+        const contactY =
+          contactBefore[1] +
+          (contactPoint[1] - contactBefore[1]) * contactProgress;
+        const spread = (i - 1) * 3.5;
+        const particleX =
+          contactX + Math.cos(contactAngle + Math.PI / 2) * spread;
+        const particleY =
+          contactY + Math.sin(contactAngle + Math.PI / 2) * spread;
+        const particleSize = 1.8 + i * 0.45;
+        const particleGlow = ctx.createRadialGradient(
+          particleX,
+          particleY,
+          0,
+          particleX,
+          particleY,
+          particleSize * 8
+        );
+
+        particleGlow.addColorStop(0, `rgba(245,252,255,${alpha})`);
+        particleGlow.addColorStop(
+          0.25,
+          `rgba(105,195,255,${alpha * 0.75})`
+        );
+        particleGlow.addColorStop(1, "rgba(0,55,255,0)");
+
+        ctx.fillStyle = particleGlow;
+        ctx.beginPath();
+        ctx.arc(particleX, particleY, particleSize * 8, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = `rgba(240,250,255,${alpha})`;
+        ctx.beginPath();
+        ctx.arc(particleX, particleY, particleSize, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
       /* Small luminous particles sit on selected electric waypoints. */
       for (let i = 1; i < points.length - 1; i++) {
         if (random() > 0.55) continue;
 
         const [particleX, particleY] = points[i];
-        const particleSize = 0.45 + random() * 1.15;
+        const particleSize = 0.6 + random() * 1.4;
         const particleGlow = ctx.createRadialGradient(
           particleX,
           particleY,
@@ -673,9 +717,9 @@ export default function ParticleNetwork() {
         ctx.lineTo(points[i][0], points[i][1]);
       }
 
-      ctx.strokeStyle = `rgba(55,145,255,${alpha * 0.28})`;
-      ctx.lineWidth = 6;
-      ctx.shadowBlur = 28;
+      ctx.strokeStyle = `rgba(55,145,255,${alpha * 0.2})`;
+      ctx.lineWidth = 2.2;
+      ctx.shadowBlur = 16;
       ctx.shadowColor = `rgba(65,155,255,${alpha})`;
 
       ctx.stroke();
@@ -695,8 +739,8 @@ export default function ParticleNetwork() {
         ctx.lineTo(points[i][0], points[i][1]);
       }
 
-      ctx.strokeStyle = `rgba(125,195,255,${alpha * 0.82})`;
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = `rgba(125,195,255,${alpha * 0.78})`;
+      ctx.lineWidth = 0.55;
 
       ctx.shadowBlur = 8;
       ctx.shadowColor = `rgba(110,195,255,${alpha})`;
@@ -718,8 +762,8 @@ export default function ParticleNetwork() {
         ctx.lineTo(points[i][0], points[i][1]);
       }
 
-      ctx.strokeStyle = `rgba(235,248,255,${alpha * 0.92})`;
-      ctx.lineWidth = 0.35;
+      ctx.strokeStyle = `rgba(235,248,255,${alpha * 0.9})`;
+      ctx.lineWidth = 0.22;
 
       ctx.stroke();
 
@@ -747,7 +791,7 @@ export default function ParticleNetwork() {
           start[0] + (end[0] - start[0]) * localProgress;
         const sparkY =
           start[1] + (end[1] - start[1]) * localProgress;
-        const sparkRadius = 1.2 + alpha * 1.2;
+        const sparkRadius = 1.5 + alpha * 1.5;
         const sparkGlow = ctx.createRadialGradient(
           sparkX,
           sparkY,
@@ -831,95 +875,56 @@ export default function ParticleNetwork() {
       labelSide: "left" | "right",
       active = false
     ) => {
-      const R = 28;
+      const R = W >= 900 ? 34 : 22;
       const intensity = active ? 1 : pulse;
 
-      const outerGlow = ctx.createRadialGradient(
+      /* Transparent eclipse node: glow and rings only, no interior fill. */
+      ctx.save();
+
+      const nodeGlow = ctx.createRadialGradient(
         x,
         y,
-        R * 0.55,
+        R * 0.72,
         x,
         y,
-        R * 2.2
+        R * 1.7
       );
 
-      outerGlow.addColorStop(
-        0,
-        `rgba(45,125,255,${0.20 + intensity * 0.12})`
+      nodeGlow.addColorStop(0, "rgba(40,130,255,0)");
+      nodeGlow.addColorStop(
+        0.72,
+        `rgba(55,145,255,${0.08 + intensity * 0.08})`
       );
-      outerGlow.addColorStop(
-        0.35,
-        `rgba(35,100,255,${0.12 + intensity * 0.08})`
-      );
-      outerGlow.addColorStop(1, "rgba(0,40,180,0)");
+      nodeGlow.addColorStop(1, "rgba(0,60,255,0)");
 
-      ctx.fillStyle = outerGlow;
+      ctx.fillStyle = nodeGlow;
       ctx.beginPath();
-      ctx.arc(x, y, R * 2.2, 0, Math.PI * 2);
+      ctx.arc(x, y, R * 1.7, 0, Math.PI * 2);
       ctx.fill();
-
-      /*
-        Outer glow
-      */
+      ctx.restore();
 
       ctx.save();
 
       ctx.beginPath();
-      ctx.arc(x, y, R + 2, 0, Math.PI * 2);
-
-      ctx.strokeStyle = `rgba(135,205,255,${
-        (active ? 0.72 : 0.48) + intensity * (active ? 0.28 : 0.42)
-      })`;
-
-      ctx.lineWidth = 1.15;
-
-      ctx.shadowBlur = 22;
-      ctx.shadowColor = `rgba(70,160,255,${
-        (active ? 0.8 : 0.65) + intensity * (active ? 0.2 : 0.3)
-      })`;
-
-      ctx.stroke();
-
-      ctx.restore();
-
-      /*
-        Dark glass interior
-      */
-
-      const fill = ctx.createRadialGradient(
-        x - 7,
-        y - 8,
-        0,
-        x,
-        y,
-        R
-      );
-
-      fill.addColorStop(
-        0,
-        `rgba(65,145,255,${0.55 + intensity * 0.15})`
-      );
-      fill.addColorStop(
-        0.22,
-        `rgba(30,90,205,${0.52 + intensity * 0.1})`
-      );
-      fill.addColorStop(0.5, "rgba(8,40,105,0.94)");
-      fill.addColorStop(0.78, "rgba(3,18,55,0.98)");
-      fill.addColorStop(1, "rgba(1,7,24,1)");
-
-      ctx.fillStyle = fill;
-
-      ctx.beginPath();
       ctx.arc(x, y, R, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.strokeStyle = `rgba(145,215,255,${
+        0.62 + intensity * 0.3
+      })`;
+      ctx.lineWidth = 1.1;
+      ctx.shadowBlur = 16;
+      ctx.shadowColor = `rgba(65,155,255,${
+        0.75 + intensity * 0.2
+      })`;
+      ctx.stroke();
+      ctx.restore();
 
       ctx.save();
       ctx.beginPath();
       ctx.arc(x, y, R - 4, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(100,185,255,${
-        0.16 + intensity * 0.15
+      ctx.strokeStyle = `rgba(100,190,255,${
+        0.28 + intensity * 0.15
       })`;
-      ctx.lineWidth = 0.7;
+      ctx.lineWidth = 0.65;
       ctx.stroke();
       ctx.restore();
 
@@ -954,12 +959,12 @@ export default function ParticleNetwork() {
 
         ctx.fillStyle = contactGlow;
         ctx.beginPath();
-        ctx.arc(contactX, contactY, 15, 0, Math.PI * 2);
+        ctx.arc(contactX, contactY, 18, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.fillStyle = "rgba(240,250,255,0.98)";
         ctx.beginPath();
-        ctx.arc(contactX, contactY, 1.8 + intensity * 0.8, 0, Math.PI * 2);
+        ctx.arc(contactX, contactY, 2.2 + intensity, 0, Math.PI * 2);
         ctx.fill();
       }
 
@@ -973,42 +978,31 @@ export default function ParticleNetwork() {
         Label outside the circle
       */
 
-      const labelX =
-        labelSide === "right"
-          ? x + R + 20
-          : x - R - 20;
+      if (W >= 640) {
+        const labelX =
+          labelSide === "right"
+            ? x + R + 20
+            : x - R - 20;
 
-      ctx.save();
+        ctx.save();
+        ctx.font = "500 10px Inter, Arial, sans-serif";
+        ctx.fillStyle = active
+          ? "rgba(190,230,255,1)"
+          : "rgba(245,248,255,0.88)";
+        ctx.textAlign = labelSide === "right" ? "left" : "right";
+        ctx.textBaseline = "middle";
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = "rgba(100,170,255,0.2)";
 
-      ctx.font =
-        "500 10px Inter, Arial, sans-serif";
+        label.forEach((line, index) => {
+          const offset =
+            (index - (label.length - 1) / 2) * 14;
 
-      ctx.fillStyle = active
-        ? "rgba(190,230,255,1)"
-        : "rgba(245,248,255,0.88)";
+          ctx.fillText(line, labelX, y + offset);
+        });
 
-      ctx.textAlign =
-        labelSide === "right"
-          ? "left"
-          : "right";
-
-      ctx.textBaseline = "middle";
-
-      ctx.shadowBlur = 6;
-      ctx.shadowColor = "rgba(100,170,255,0.2)";
-
-      label.forEach((line, index) => {
-        const offset =
-          (index - (label.length - 1) / 2) * 14;
-
-        ctx.fillText(
-          line,
-          labelX,
-          y + offset
-        );
-      });
-
-      ctx.restore();
+        ctx.restore();
+      }
     };
 
     /* A few background links carry slower moving light particles. */
@@ -1064,7 +1058,7 @@ export default function ParticleNetwork() {
 
       const R =
         Math.min(W, H) *
-        (W >= 900 ? 0.043 : 0.055) *
+        (W >= 900 ? 0.052 : 0.065) *
         pulse;
 
       /*
@@ -1316,7 +1310,7 @@ export default function ParticleNetwork() {
 
       NODES.forEach((node, index) => {
         const { x, y } = getNodePosition(node);
-        const NODE_RADIUS = 28;
+        const NODE_RADIUS = W >= 900 ? 34 : 22;
         const dx = x - cx;
         const dy = y - cy;
         const distance = Math.hypot(dx, dy);
@@ -1365,30 +1359,6 @@ export default function ParticleNetwork() {
 
     const section = animationCanvas.parentElement;
 
-    const onMouseMove = (event: MouseEvent) => {
-      if (!section) return;
-
-      const rect =
-        section.getBoundingClientRect();
-
-      mouse.x =
-        ((event.clientX - rect.left) /
-          rect.width -
-          0.5) *
-        2;
-
-      mouse.y =
-        ((event.clientY - rect.top) /
-          rect.height -
-          0.5) *
-        2;
-    };
-
-    const onMouseLeave = () => {
-      mouse.x = 0;
-      mouse.y = 0;
-    };
-
     const getTouchedNode = (event: TouchEvent) => {
       const touch = event.touches[0] ?? event.changedTouches[0];
 
@@ -1426,18 +1396,6 @@ export default function ParticleNetwork() {
     const onTouchEnd = () => {
       touchedNode = null;
     };
-
-    section?.addEventListener(
-      "mousemove",
-      onMouseMove,
-      { passive: true }
-    );
-
-    section?.addEventListener(
-      "mouseleave",
-      onMouseLeave,
-      { passive: true }
-    );
 
     section?.addEventListener("touchstart", onTouchStart, {
       passive: true,
@@ -1501,16 +1459,6 @@ export default function ParticleNetwork() {
         resize
       );
 
-      section?.removeEventListener(
-        "mousemove",
-        onMouseMove
-      );
-
-      section?.removeEventListener(
-        "mouseleave",
-        onMouseLeave
-      );
-
       section?.removeEventListener("touchstart", onTouchStart);
       section?.removeEventListener("touchmove", onTouchMove);
       section?.removeEventListener("touchend", onTouchEnd);
@@ -1529,10 +1477,16 @@ export default function ParticleNetwork() {
         className="
           pointer-events-none
           absolute
-          inset-0
+          inset-x-0
+          top-0
           z-[1]
           h-full
+          min-h-screen
           w-full
+          lg:-left-[7.5%]
+          lg:h-[115vh]
+          lg:min-h-[900px]
+          lg:w-[115%]
         "
       />
 
@@ -1543,10 +1497,16 @@ export default function ParticleNetwork() {
         className="
           pointer-events-none
           absolute
-          inset-0
+          inset-x-0
+          top-0
           z-[1]
           h-full
+          min-h-screen
           w-full
+          lg:-left-[7.5%]
+          lg:h-[115vh]
+          lg:min-h-[900px]
+          lg:w-[115%]
         "
       />
     </>
